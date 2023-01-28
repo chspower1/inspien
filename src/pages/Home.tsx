@@ -1,4 +1,16 @@
+import { Link } from "react-router-dom";
+import { useAppSelector } from "../store/hooks";
+
 const Home = () => {
-  return <></>;
+  const data = useAppSelector((state) => state.value.directories);
+  return (
+    <>
+      {data.map(({ id }) => (
+        <Link to={`server/${id}`} key={id}>
+          <div>server #{id}</div>
+        </Link>
+      ))}
+    </>
+  );
 };
 export default Home;
