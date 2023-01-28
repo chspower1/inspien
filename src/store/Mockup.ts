@@ -1,4 +1,26 @@
-export const MockupState = {
+interface MockupDate {
+  directories: Server[];
+}
+
+interface Server {
+  id: number;
+  serverName: string;
+  directories: Directory;
+}
+interface Directory {
+  name: string;
+  type: "DIRECTORY";
+  parent: undefined | string;
+  children: (File | Directory)[] | [];
+}
+interface File {
+  name: string;
+  type: "FILE";
+  file_size: number;
+  modified_date: number;
+}
+
+export const MockupState: MockupDate = {
   directories: [
     {
       id: 1,
