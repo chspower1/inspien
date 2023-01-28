@@ -11,7 +11,7 @@ export interface Directory {
   name: string;
   type: "DIRECTORY";
   parent: undefined | string;
-  children: (File | Directory)[] | [];
+  children: Children;
 }
 export interface File {
   name: string;
@@ -19,6 +19,7 @@ export interface File {
   file_size: number;
   modified_date: number;
 }
+export type Children = (File | Directory)[];
 
 export const MockupState: MockupDate = {
   directories: [
@@ -47,7 +48,7 @@ export const MockupState: MockupDate = {
       },
     },
     {
-      id: 1,
+      id: 2,
       serverName: "Server #2",
       directories: {
         name: "/",
@@ -57,7 +58,7 @@ export const MockupState: MockupDate = {
       },
     },
     {
-      id: 1,
+      id: 3,
       serverName: "Server #3",
       directories: {
         name: "/",
@@ -67,7 +68,7 @@ export const MockupState: MockupDate = {
       },
     },
     {
-      id: 1,
+      id: 4,
       serverName: "Server #4",
       directories: {
         name: "/",
