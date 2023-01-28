@@ -6,6 +6,7 @@ const usePortal = () => {
 
   useEffect(() => {
     setIsMount(true);
+    return setIsMount(false);
   }, []);
 
   const Portal = ({ children }: { children: ReactNode | JSX.Element }) => {
