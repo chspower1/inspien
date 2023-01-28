@@ -1,19 +1,19 @@
-interface MockupDate {
+export interface MockupDate {
   directories: Server[];
 }
 
-interface Server {
+export interface Server {
   id: number;
   serverName: string;
   directories: Directory;
 }
-interface Directory {
+export interface Directory {
   name: string;
   type: "DIRECTORY";
   parent: undefined | string;
   children: (File | Directory)[] | [];
 }
-interface File {
+export interface File {
   name: string;
   type: "FILE";
   file_size: number;
