@@ -1,5 +1,7 @@
 import { createPortal } from "react-dom";
-import usePortal from "../hooks/usePortal";
+import styled from "styled-components";
+import { Col } from "../assets/style/common";
+
 interface ModalProps {
   isShow: boolean;
   confirmComment?: string;
@@ -16,17 +18,32 @@ const Modal = ({
   activeFunction,
   title,
 }: ModalProps) => {
-  const Portal = usePortal();
   const ModalContent = (
-    <div>
-      <title>{title}</title>
-      <div>
-        <button onClick={activeFunction}>{confirmComment}</button>
-        <button onClick={onClose}>{closingComment}</button>
-      </div>
-    </div>
+    <>
+      <ModalWrapper>
+        <h2>{title}</h2>
+        <div>
+          <button onClick={activeFunction}>{confirmComment}</button>
+          <button onClick={onClose}>{closingComment}</button>
+        </div>
+      </ModalWrapper>
+      <Overlay />
+    </>
   );
-  return isShow ? Portal({ children: ModalContent }) : null;
+  return isShow
+    ? createPortal(ModalContent, document.getElementById("modal-root") as HTMLElement)
+    : null;
 };
 
 export default Modal;
+const ModalWrapper = styled(Col)`
+  z-index: 1000;
+  position: absolute;
+`;
+const Overlay = styled.div`
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+`;
