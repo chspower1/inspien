@@ -9,6 +9,8 @@ interface ModalProps {
   onClose: () => void;
   activeFunction: () => void;
   title: string;
+  width?: string;
+  height?: string;
 }
 const Modal = ({
   isShow,
@@ -17,17 +19,19 @@ const Modal = ({
   onClose,
   activeFunction,
   title,
+  width = "500px",
+  height = "400px",
 }: ModalProps) => {
   const ModalContent = (
     <>
-      <ModalWrapper>
+      <ModalWrapper width={width} height={height}>
         <h2>{title}</h2>
         <div>
-          <button onClick={activeFunction}>{confirmComment}</button>
-          <button onClick={onClose}>{closingComment}</button>
+          <ConfirmButton onClick={activeFunction}>{confirmComment}</ConfirmButton>
+          <ClosingButton onClick={onClose}>{closingComment}</ClosingButton>
         </div>
       </ModalWrapper>
-      <Overlay />
+      <Overlay onClick={onClose} />
     </>
   );
   return isShow
@@ -36,9 +40,15 @@ const Modal = ({
 };
 
 export default Modal;
-const ModalWrapper = styled(Col)`
+const ModalWrapper = styled(Col)<{ width: string; height: string }>`
   z-index: 1000;
   position: absolute;
+  width: ${({ width }) => width};
+  height: ${({ height }) => height};
+  background-color: white;
+  right: 50%;
+  top: 50%;
+  transform: translate(50%, -50%);
 `;
 const Overlay = styled.div`
   position: absolute;
@@ -46,4 +56,13 @@ const Overlay = styled.div`
   height: 100vh;
   top: 0;
   background-color: rgba(0, 0, 0, 0.2);
+`;
+const ConfirmButton = styled.button`
+  width: 100px;
+  height: 60px;
+  background-color: #4472c4;
+`;
+
+const ClosingButton = styled(ConfirmButton)`
+  background-color: #b73e47;
 `;
