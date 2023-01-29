@@ -1,0 +1,8 @@
+@font-face {
+  font-family: "SebangBold";
+  src: url("../fonts/SEBANG_Gothic_OTF_Bold.otf") format("opentype");
+}
+@font-face {
+  font-family: "Sebang";
+  src: url("../fonts/SEBANG_Gothic_OTF.otf") format("opentype");
+}
