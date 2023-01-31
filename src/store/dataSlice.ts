@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { sliceRoute } from "../utils/sliceRoute";
 import { RootState } from "./configureStore";
-import { Directory, File, MockupState } from "./Mockup";
+import { Children, Directory, File, MockupState } from "./Mockup";
 const initialState = {
   value: MockupState,
 };
@@ -17,17 +17,29 @@ const dataSlice = createSlice({
   reducers: {
     addFile: (state, action: PayloadAction<AddFileResponse>) => {
       const { currentDir, currentParent, file, serverId } = action.payload;
-      console.log(
-        state.value.directories
-          .find((server) => server.id === serverId)
-          ?.directories.children.forEach((item) => {
-            if (item.type === "DIRECTORY") {
-              if (item.name === currentDir && item.parent === currentParent) {
-                item.children.push(file);
-              }
-            }
-          })
-      );
+      const routeArr = sliceRoute({ currentParent, currentDir });
+      let children: Children = state.value.directories[serverId - 1].directories.children;
+      const indexArr: number[] = [];
+      console.log(routeArr);
+      routeArr.forEach((route) => {
+        const index = children.findIndex(
+          (item) => item.name === route && item.type === "DIRECTORY"
+        );
+        console.log(index);
+        if (index > -1) {
+          indexArr.push(index);
+          const subDirectroty: Directory = children[index] as Directory;
+          children = subDirectroty.children!;
+        }
+      });
+      state.value.directories[serverId - 1].directories.children = [];
+      const addFiledd = (children: Children, indexArr: number[]) => {
+        if (indexArr) {
+          const index = indexArr.pop() as number;
+          addFiledd(children[index].children, indexArr);
+        }
+      };
+      console.log(indexArr);
     },
     removeFile: (state, action: PayloadAction<number>) => {},
     updateFile: (state, action: PayloadAction<Directory | File>) => {},
