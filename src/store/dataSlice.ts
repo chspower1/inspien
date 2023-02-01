@@ -3,9 +3,7 @@ import Item from "../components/Item";
 import { searchInChildren } from "../utils/searchInChildren";
 import { RootState } from "./configureStore";
 import { Children, Directory, File, MockupState } from "./Mockup";
-const initialState = {
-  value: MockupState,
-};
+
 interface FileResponse {
   serverId: number;
   currentParent: string | undefined;
@@ -17,6 +15,11 @@ interface AddFileResponse extends FileResponse {
 interface DeleteFileResponse extends FileResponse {
   fileName: string;
 }
+
+const initialState = {
+  value: MockupState,
+};
+
 const dataSlice = createSlice({
   name: "dataSlice",
   initialState,
@@ -53,5 +56,5 @@ const dataSlice = createSlice({
 
 export const { addFile, removeFile, updateFile, addFolder, removeFolder, updateFolder } =
   dataSlice.actions;
-export const selectCount = (state: RootState) => state.value;
+export const selectCount = (state: RootState) => state.data;
 export default dataSlice.reducer;
