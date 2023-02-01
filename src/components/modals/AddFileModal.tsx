@@ -45,6 +45,7 @@ const AddFileModal = ({ serverId, setIsMountAddFile }: AddFileModalProps) => {
         children: [...children, file],
       })
     );
+    setIsMountAddFile(false);
   };
   return (
     <ModalWrapper>

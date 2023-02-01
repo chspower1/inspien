@@ -20,7 +20,7 @@ const Detail = () => {
       </Link>
       <Row>
         {data && <DirectoryList data={data} />}
-        <FileList />
+        <FileList serverId={parseInt(id!)} />
       </Row>
     </>
   );

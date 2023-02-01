@@ -3,8 +3,13 @@ import usePortal from "../../hooks/usePortal";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { setCurrentDir } from "../../store/slice/currentDirSlice";
 import Item from "../Item";
+import AddFileModal from "../modals/AddFileModal";
+import DeleteFileModal from "../modals/DeleteFileModal";
 
-const FileList = () => {
+interface FileListProps {
+  serverId: number;
+}
+const FileList = ({ serverId }: FileListProps) => {
   const currentDir = useAppSelector((state) => state.currentDir.value);
   console.log("FileList", currentDir);
   const dispatch = useAppDispatch();
@@ -30,6 +35,12 @@ const FileList = () => {
             </div>
           )
       )}
+      <AddFilePortal>
+        <AddFileModal serverId={serverId} setIsMountAddFile={setIsMountAddFile} />
+      </AddFilePortal>
+      <DeleteFilePortal>
+        <DeleteFileModal serverId={serverId} setIsMountDeleteFile={setIsMountDeleteFile} />
+      </DeleteFilePortal>
     </div>
   );
 };
