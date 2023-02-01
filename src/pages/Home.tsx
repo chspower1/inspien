@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useAppSelector } from "../store/hooks";
 
 const Home = () => {
-  const data = useAppSelector((state) => state.value.directories);
+  const data = useAppSelector((state) => state.data.directories);
   return (
     <>
       {data.map(({ id }) => (

@@ -7,136 +7,29 @@ import AddFileModal from "../components/modals/AddFileModal";
 import usePortal from "../hooks/usePortal";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import type { Children, Directory } from "../store/Mockup";
-import fileIcon from "../assets/img/file_icon.png";
 import DirectoryIcon from "../assets/img/directory_icon.png";
 import DeleteFileModal from "../components/modals/DeleteFileModal";
-export interface CurrentDirInfo {
-  name: string;
-  parent: string | undefined;
-  children: Children;
-  selectedFile: string | null;
-}
+import { checkDirInChildren } from "../utils/checkDirInChildren";
+import DirectoryList from "../components/detail/DirectoryList";
+import FileList from "../components/detail/FileList";
+
 const Detail = () => {
   const { id } = useParams();
 
   // Redux
   const data = useAppSelector((state) =>
-    state.value.directories.find((server) => server.id === parseInt(id!))
+    state.data.directories.find((server) => server.id === parseInt(id!))
   );
-  const dispatch = useAppDispatch();
 
-  const [currentDirInfo, setCurrentDirInfo] = useState<CurrentDirInfo>({
-    name: "/",
-    parent: undefined,
-    children: [],
-    selectedFile: null,
-  });
-  // Modal
-  const { Portal: AddFilePortal, setIsMount: setIsMountAddFile } = usePortal();
-  const { Portal: DeleteFilePortal, setIsMount: setIsMountDeleteFile } = usePortal();
-  const { Portal: AddFolderPortal, setIsMount: setIsMountAddFolder } = usePortal();
-
-  const handleClickDirectory = (item: Directory) => {
-    const { name, parent, children } = item;
-    setCurrentDirInfo({
-      name,
-      parent,
-      children,
-      selectedFile: null,
-    });
-  };
-  const paintTree = (children: Children) => {
-    return children.map((item) => {
-      if (item.type === "DIRECTORY")
-        return (
-          <TreeItemBox key={item.parent + item.name}>
-            <DirectoryItem
-              className={
-                currentDirInfo.name === item.name && currentDirInfo.parent === item.parent
-                  ? "active"
-                  : "normal"
-              }
-              onClick={() => handleClickDirectory(item)}
-            >
-              <OpenOrCloseButton>+</OpenOrCloseButton>
-              <img src={DirectoryIcon} alt="Dic" />
-              {item.name}
-            </DirectoryItem>
-            <TreeItemBox>{paintTree(item.children)}</TreeItemBox>
-          </TreeItemBox>
-        );
-      else
-        return (
-          <TreeItemBox key={item.name + item.modified_date}>
-            <DirectoryItem>
-              <img src={fileIcon} alt="File" />
-              {item.name}
-            </DirectoryItem>
-          </TreeItemBox>
-        );
-    });
-  };
-
-  const handleClickButton = (mode: "ADD" | "DELETE" | "UPDATE") => {
-    setIsMountAddFile(mode === "ADD" && true);
-    setIsMountDeleteFile(mode === "DELETE" && true);
-  };
-  console.log(data);
   return (
     <>
       <Link to="/">
         <BackButton>뒤로가기</BackButton>
       </Link>
       <Row>
-        <Col>
-          <ButtonBox>
-            <Button>추가</Button>
-            <Button onClick={() => handleClickButton("UPDATE")}>수정</Button>
-            <Button isDelete onClick={() => handleClickButton("DELETE")}>
-              삭제
-            </Button>
-          </ButtonBox>
-
-          {paintTree(data?.directories.children!)}
-        </Col>
-        <div>
-          <Button onClick={() => handleClickButton("ADD")}>추가</Button>
-          <Button isDelete onClick={() => handleClickButton("DELETE")}>
-            삭제
-          </Button>
-          <Item isTitle />
-          {currentDirInfo.children?.map(
-            (item) =>
-              item.type === "FILE" && (
-                <div
-                  onClick={() => setCurrentDirInfo({ ...currentDirInfo, selectedFile: item.name })}
-                >
-                  <Item isActive={currentDirInfo.selectedFile === item.name} item={item} />
-                </div>
-              )
-          )}
-        </div>
+        {data && <DirectoryList data={data} />}
+        <FileList />
       </Row>
-      <AddFilePortal
-        children={
-          <AddFileModal
-            serverId={parseInt(id!)}
-            currentDirInfo={currentDirInfo}
-            setIsMountAddFile={setIsMountAddFile}
-            setCurrentDirInfo={setCurrentDirInfo}
-          />
-        }
-      />
-      <DeleteFilePortal
-        children={
-          <DeleteFileModal
-            serverId={parseInt(id!)}
-            currentDirInfo={currentDirInfo}
-            setIsMountDeleteFile={setIsMountDeleteFile}
-            setCurrentDirInfo={setCurrentDirInfo}
-          />
-        }
-      />
     </>
   );
 };

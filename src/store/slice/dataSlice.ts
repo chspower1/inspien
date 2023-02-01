@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import Item from "../components/Item";
-import { searchInChildren } from "../utils/searchInChildren";
-import { RootState } from "./configureStore";
-import { Children, Directory, File, MockupState } from "./Mockup";
+import Item from "../../components/Item";
+import { searchInChildren } from "../../utils/searchInChildren";
+import { RootState } from "../configureStore";
+import { Children, Directory, File, MockupState } from "../Mockup";
 
 interface FileResponse {
   serverId: number;
@@ -17,7 +17,7 @@ interface DeleteFileResponse extends FileResponse {
 }
 
 const initialState = {
-  value: MockupState,
+  ...MockupState,
 };
 
 const dataSlice = createSlice({
@@ -27,7 +27,7 @@ const dataSlice = createSlice({
     addFile: (state, action: PayloadAction<AddFileResponse>) => {
       const { currentDir, currentParent, file, serverId } = action.payload;
       const targetDirectory = searchInChildren(
-        state.value.directories[serverId - 1].directories.children,
+        state.directories[serverId - 1].directories.children,
         currentDir,
         currentParent
       );
@@ -37,7 +37,7 @@ const dataSlice = createSlice({
     removeFile: (state, action: PayloadAction<DeleteFileResponse>) => {
       const { currentDir, currentParent, fileName, serverId } = action.payload;
       const targetDirectory = searchInChildren(
-        state.value.directories[serverId - 1].directories.children,
+        state.directories[serverId - 1].directories.children,
         currentDir,
         currentParent
       );
@@ -56,5 +56,4 @@ const dataSlice = createSlice({
 
 export const { addFile, removeFile, updateFile, addFolder, removeFolder, updateFolder } =
   dataSlice.actions;
-export const selectCount = (state: RootState) => state.data;
 export default dataSlice.reducer;

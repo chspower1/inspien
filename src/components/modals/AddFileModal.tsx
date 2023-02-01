@@ -1,27 +1,21 @@
 import { useForm } from "react-hook-form";
 import { ModalWrapper, ConfirmButton, ClosingButton } from "../../assets/style/modal";
-import { CurrentDirInfo } from "../../pages/Detail";
-import { addFile } from "../../store/dataSlice";
-import { useAppDispatch } from "../../store/hooks";
+
+import { addFile } from "../../store/slice/dataSlice";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { File } from "../../store/Mockup";
 import Input from "../Input";
+import { setCurrentDir } from "../../store/slice/currentDirSlice";
 interface AddFileForm {
   name: string;
   size: number;
 }
 interface AddFileModalProps {
   serverId: number;
-  currentDirInfo: CurrentDirInfo;
   setIsMountAddFile: React.Dispatch<React.SetStateAction<boolean>>;
-  setCurrentDirInfo: React.Dispatch<React.SetStateAction<CurrentDirInfo>>;
 }
-const AddFileModal = ({
-  serverId,
-  currentDirInfo,
-  setIsMountAddFile,
-  setCurrentDirInfo,
-}: AddFileModalProps) => {
-  const { name, children, parent } = currentDirInfo;
+const AddFileModal = ({ serverId, setIsMountAddFile }: AddFileModalProps) => {
+  const { name, children, parent, selectedFile } = useAppSelector((state) => state.currentDir);
   const dispatch = useAppDispatch();
   const {
     register,
@@ -41,10 +35,14 @@ const AddFileModal = ({
       modified_date: Date.now(),
     };
     dispatch(addFile({ serverId, file, currentDir: name, currentParent: parent }));
-    setCurrentDirInfo({
-      ...currentDirInfo,
-      children: [...children, file],
-    });
+    dispatch(
+      setCurrentDir({
+        name,
+        parent,
+        selectedFile,
+        children: [...children, file],
+      })
+    );
   };
   return (
     <ModalWrapper>

@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import currentDirSlice from "./currentDirSlice";
-import dataSlice from "./dataSlice";
+import currentDirSlice from "./slice/currentDirSlice";
+import dataSlice from "./slice/dataSlice";
 
 const store = configureStore({
   reducer: {
