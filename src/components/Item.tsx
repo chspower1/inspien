@@ -12,10 +12,10 @@ interface ItemProps {
 
 const Item = ({ item, isTitle, isActive = false }: ItemProps) => {
   return isTitle ? (
-    <ItemWrapper>
-      <Name isTitle>이름</Name>
-      <FileSize isTitle>파일크기</FileSize>
-      <Time isTitle>수정시간</Time>
+    <ItemWrapper isTitle>
+      <Name>이름</Name>
+      <FileSize>파일크기</FileSize>
+      <Time>수정시간</Time>
     </ItemWrapper>
   ) : item?.type === "FILE" ? (
     <ItemWrapper className={isActive ? "active" : "normal"}>
@@ -28,19 +28,22 @@ const Item = ({ item, isTitle, isActive = false }: ItemProps) => {
   ) : null;
 };
 export default Item;
-const ItemWrapper = styled(Row)`
+const ItemWrapper = styled(Row)<{ isTitle?: boolean }>`
   width: 1000px;
   height: 80px;
-  &.active {
-    div {
-      background-color: red;
-    }
-  }
-`;
-const Element = styled(Row)<{ isTitle?: boolean }>`
-  height: 80px;
+  cursor: pointer;
   background-color: ${({ theme, isTitle }) => (isTitle ? theme.main : "#DAE3F3")};
   color: ${({ isTitle }) => (isTitle ? "white" : "black")};
+  &:hover {
+    background-color: #9eb2db;
+  }
+  &.active {
+    background-color: #7e94c0;
+  }
+`;
+const Element = styled(Row)`
+  height: 80px;
+
   border: 1px solid white;
 `;
 const Name = styled(Element)`
