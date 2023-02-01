@@ -40,7 +40,7 @@ const dataSlice = createSlice({
       );
       const targetIndex = targetDirectory?.children.findIndex((item) => item.name === fileName);
       console.log(targetIndex);
-      if (targetIndex && targetIndex > -1) {
+      if (targetIndex !== undefined && targetIndex > -1) {
         targetDirectory?.children.splice(targetIndex, 1);
       }
     },
