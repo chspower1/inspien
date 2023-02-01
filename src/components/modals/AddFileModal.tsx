@@ -11,36 +11,40 @@ interface AddFileForm {
 }
 interface AddFileModalProps {
   serverId: number;
-  currentDir: string;
-  currentParent: string | undefined;
+  currentDirInfo: CurrentDirInfo;
   setIsMountAddFile: React.Dispatch<React.SetStateAction<boolean>>;
   setCurrentDirInfo: React.Dispatch<React.SetStateAction<CurrentDirInfo>>;
 }
 const AddFileModal = ({
   serverId,
-  currentDir,
-  currentParent,
+  currentDirInfo,
   setIsMountAddFile,
   setCurrentDirInfo,
 }: AddFileModalProps) => {
+  const { name, children, parent } = currentDirInfo;
   const dispatch = useAppDispatch();
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm<AddFileForm>();
+
+  // 추가 버튼 클릭 시
   const onValid = (form: AddFileForm) => {
+    console.log(children.filter((item) => item.name === form.name));
+    if (children.find((item) => item.name === form.name))
+      return alert("이름이 같은 파일은 생성할 수 없습니다!");
     const file: File = {
       name: form.name,
       type: "FILE",
       file_size: form.size,
       modified_date: Date.now(),
     };
-    dispatch(addFile({ serverId, file, currentDir, currentParent }));
-    setCurrentDirInfo((currentInfo) => ({
-      ...currentInfo,
-      children: [...currentInfo.children, file],
-    }));
+    dispatch(addFile({ serverId, file, currentDir: name, currentParent: parent }));
+    setCurrentDirInfo({
+      ...currentDirInfo,
+      children: [...children, file],
+    });
   };
   return (
     <ModalWrapper>
