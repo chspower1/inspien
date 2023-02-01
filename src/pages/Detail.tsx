@@ -7,11 +7,13 @@ import AddFileModal from "../components/modals/AddFileModal";
 import usePortal from "../hooks/usePortal";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import type { Children, Directory } from "../store/Mockup";
-
+import fileIcon from "../assets/img/file_icon.png";
+import DirectoryIcon from "../assets/img/directory_icon.png";
 export interface CurrentDirInfo {
   name: string;
   parent: string | undefined;
   children: Children;
+  selectedFile: string | null;
 }
 const Detail = () => {
   const { id } = useParams();
@@ -26,8 +28,8 @@ const Detail = () => {
     name: "/",
     parent: undefined,
     children: [],
+    selectedFile: null,
   });
-
   // Modal
   const { Portal: AddFilePortal, setIsMount: setIsMountAddFile } = usePortal();
   const { Portal: AddFolderPortal, setIsMount: setIsMountAddFolder } = usePortal();
@@ -38,51 +40,37 @@ const Detail = () => {
       name,
       parent,
       children,
+      selectedFile: null,
     });
   };
   const paintTree = (children: Children) => {
     return children.map((item) => {
       if (item.type === "DIRECTORY")
         return (
-          <>
-            <div>
-              <div onClick={() => handleClickDirectory(item)}>
-                <svg
-                  width="32"
-                  height="26"
-                  viewBox="0 0 32 26"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M28.8 3.2H16L12.8 0H3.2C1.44 0 0.016 1.44 0.016 3.2L0 22.4C0 24.16 1.44 25.6 3.2 25.6H28.8C30.56 25.6 32 24.16 32 22.4V6.4C32 4.64 30.56 3.2 28.8 3.2ZM28.8 22.4H3.2V6.4H28.8V22.4Z"
-                    fill="#4472C4"
-                  />
-                </svg>
-                {item.name}
-              </div>
-              <SubDirectory>{paintTree(item.children)}</SubDirectory>
-            </div>
-          </>
+          <TreeItemBox key={item.parent + item.name}>
+            <DirectoryItem
+              className={
+                currentDirInfo.name === item.name && currentDirInfo.parent === item.parent
+                  ? "active"
+                  : "normal"
+              }
+              onClick={() => handleClickDirectory(item)}
+            >
+              <OpenOrCloseButton>+</OpenOrCloseButton>
+              <img src={DirectoryIcon} alt="Dic" />
+              {item.name}
+            </DirectoryItem>
+            <TreeItemBox>{paintTree(item.children)}</TreeItemBox>
+          </TreeItemBox>
         );
       else
         return (
-          <SubDirectory>
-            <svg
-              width="27"
-              height="34"
-              viewBox="0 0 27 34"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M16.6667 0H3.33333C1.4974 0 0 1.4974 0 3.33333V30C0 31.8359 1.4974 33.3333 3.33333 33.3333H23.3333C25.1693 33.3333 26.6667 31.8359 26.6667 30V10L16.6667 0ZM24.1667 11.6667H15V2.5L24.1667 11.6667Z"
-                fill="#4472C4"
-              />
-            </svg>
-
-            {item.name}
-          </SubDirectory>
+          <TreeItemBox key={item.name + item.modified_date}>
+            <DirectoryItem>
+              <img src={fileIcon} alt="File" />
+              {item.name}
+            </DirectoryItem>
+          </TreeItemBox>
         );
     });
   };
@@ -99,20 +87,28 @@ const Detail = () => {
       <Row>
         <Col>
           <ButtonBox>
-            <Button onClick={() => handleClickButton("ADD")}>추가</Button>
+            <Button>추가</Button>
             <Button onClick={() => handleClickButton("UPDATE")}>수정</Button>
             <Button isDelete onClick={() => handleClickButton("DELETE")}>
               삭제
             </Button>
           </ButtonBox>
+
           {paintTree(data?.directories.children!)}
         </Col>
         <div>
-          <Button>추가</Button>
-          <input type="text" />
-          <button onClick={() => {}}>추가</button>
+          <Button onClick={() => handleClickButton("ADD")}>추가</Button>
           <Item isTitle />
-          {currentDirInfo.children?.map((item) => item.type === "FILE" && <Item item={item} />)}
+          {currentDirInfo.children?.map(
+            (item) =>
+              item.type === "FILE" && (
+                <div
+                  onClick={() => setCurrentDirInfo({ ...currentDirInfo, selectedFile: item.name })}
+                >
+                  <Item isActive={currentDirInfo.selectedFile === item.name} item={item} />
+                </div>
+              )
+          )}
         </div>
       </Row>
       <AddFilePortal
@@ -147,6 +143,30 @@ const Button = styled.button<{ isDelete?: boolean }>`
   background-color: ${({ theme, isDelete }) => (isDelete ? theme.danger : theme.main)};
   color: white;
 `;
-const SubDirectory = styled.div`
+const TreeItemBox = styled.div`
+  position: relative;
   margin-left: 10px;
+`;
+const DirectoryItem = styled(Row)`
+  justify-content: flex-start;
+  width: auto;
+  padding: 0px 10px;
+  height: 35px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  &:hover {
+    background-color: #f1f1f1;
+  }
+  &.active {
+    background-color: #e4e4e4;
+  }
+`;
+const OpenOrCloseButton = styled.button`
+  position: absolute;
+  left: -26px;
+  width: 26px;
+  height: 26px;
+  background-color: ${({ theme }) => theme.main};
+  color: white;
+  margin-right: 10px;
 `;
