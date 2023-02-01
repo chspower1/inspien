@@ -10,7 +10,10 @@ const usePortal = () => {
   const Portal = ({ children }: ModalProps) => {
     return isMount
       ? ReactDOM.createPortal(
-          <Overlay>{children}</Overlay>,
+          <>
+            {children}
+            <Overlay onClick={() => setIsMount(false)} />
+          </>,
           document.getElementById("modal-root") as HTMLElement
         )
       : null;

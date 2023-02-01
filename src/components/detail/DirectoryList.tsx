@@ -16,7 +16,7 @@ interface DirectoryListProps {
   data: Server;
 }
 const DirectoryList = ({ data }: DirectoryListProps) => {
-  const currentDir = useAppSelector((state) => state.currentDir);
+  const currentDir = useAppSelector((state) => state.currentDir.value);
   const dispatch = useAppDispatch();
   const { Portal: AddFolderPortal, setIsMount: setIsMountAddFolder } = usePortal();
   const { Portal: updateFolderPortal, setIsMount: setIsMountUpdateFolder } = usePortal();

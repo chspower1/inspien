@@ -7,7 +7,9 @@ interface DeleteFileModalProps {
   setIsMountDeleteFile: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const DeleteFileModal = ({ serverId, setIsMountDeleteFile }: DeleteFileModalProps) => {
-  const { name, children, parent, selectedFile } = useAppSelector((state) => state.currentDir);
+  const { name, children, parent, selectedFile } = useAppSelector(
+    (state) => state.currentDir.value
+  );
   const dispatch = useAppDispatch();
 
   const handleClickDeleteButton = () => {

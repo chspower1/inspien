@@ -15,7 +15,9 @@ interface AddFileModalProps {
   setIsMountAddFile: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const AddFileModal = ({ serverId, setIsMountAddFile }: AddFileModalProps) => {
-  const { name, children, parent, selectedFile } = useAppSelector((state) => state.currentDir);
+  const { name, children, parent, selectedFile } = useAppSelector(
+    (state) => state.currentDir.value
+  );
   const dispatch = useAppDispatch();
   const {
     register,
