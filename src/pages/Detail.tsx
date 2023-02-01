@@ -1,8 +1,8 @@
 import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Row } from "../assets/style/common";
-import DirectoryList from "../components/detail/DirectoryList";
-import FileList from "../components/detail/FileList";
+import DirectoryList from "../components/list/DirectoryList";
+import FileList from "../components/list/FileList";
 import { useAppSelector } from "../store/hooks";
 
 const Detail = () => {

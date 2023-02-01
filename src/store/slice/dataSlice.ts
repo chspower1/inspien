@@ -15,7 +15,10 @@ interface AddFileResponse extends FileResponse {
 interface DeleteFileResponse extends FileResponse {
   fileName: string;
 }
-
+interface UpdateFileResponse extends FileResponse {
+  oldName: string;
+  newName: string;
+}
 const initialState = {
   value: MockupState,
 };
@@ -47,13 +50,25 @@ const dataSlice = createSlice({
         targetDirectory?.children.splice(targetIndex, 1);
       }
     },
-    updateFile: (state, action: PayloadAction<Directory | File>) => {},
-    addFolder: (state, action: PayloadAction<Directory | File>) => {},
-    removeFolder: (state, action: PayloadAction<number>) => {},
-    updateFolder: (state, action: PayloadAction<Directory | File>) => {},
+    updateFile: (state, action: PayloadAction<UpdateFileResponse>) => {
+      const { currentDir, currentParent, oldName, newName, serverId } = action.payload;
+      const targetDirectory = searchInChildren(
+        state.value.directories[serverId - 1].directories.children,
+        currentDir,
+        currentParent
+      );
+      targetDirectory?.children.forEach((item) => {
+        if (item.name === oldName) {
+          item.name = newName;
+        }
+      });
+    },
+    addDirectory: (state, action: PayloadAction<Directory | File>) => {},
+    removeDirectory: (state, action: PayloadAction<number>) => {},
+    updateDirectory: (state, action: PayloadAction<Directory | File>) => {},
   },
 });
 
-export const { addFile, removeFile, updateFile, addFolder, removeFolder, updateFolder } =
+export const { addFile, removeFile, updateFile, addDirectory, removeDirectory, updateDirectory } =
   dataSlice.actions;
 export default dataSlice.reducer;
