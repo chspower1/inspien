@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { ModalWrapper, ConfirmButton, ClosingButton } from "../../assets/style/modal";
+import { CurrentDirInfo } from "../../pages/Detail";
 import { addFile } from "../../store/dataSlice";
 import { useAppDispatch } from "../../store/hooks";
 import { File } from "../../store/Mockup";
@@ -13,12 +14,14 @@ interface AddFileModalProps {
   currentDir: string;
   currentParent: string | undefined;
   setIsMountAddFile: React.Dispatch<React.SetStateAction<boolean>>;
+  setCurrentDirInfo: React.Dispatch<React.SetStateAction<CurrentDirInfo>>;
 }
 const AddFileModal = ({
   serverId,
   currentDir,
   currentParent,
   setIsMountAddFile,
+  setCurrentDirInfo,
 }: AddFileModalProps) => {
   const dispatch = useAppDispatch();
   const {
@@ -34,6 +37,10 @@ const AddFileModal = ({
       modified_date: Date.now(),
     };
     dispatch(addFile({ serverId, file, currentDir, currentParent }));
+    setCurrentDirInfo((currentInfo) => ({
+      ...currentInfo,
+      children: [...currentInfo.children, file],
+    }));
   };
   return (
     <ModalWrapper>
