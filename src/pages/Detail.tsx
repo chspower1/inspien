@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "../store/hooks";
 import type { Children, Directory } from "../store/Mockup";
 import fileIcon from "../assets/img/file_icon.png";
 import DirectoryIcon from "../assets/img/directory_icon.png";
+import DeleteFileModal from "../components/modals/DeleteFileModal";
 export interface CurrentDirInfo {
   name: string;
   parent: string | undefined;
@@ -32,6 +33,7 @@ const Detail = () => {
   });
   // Modal
   const { Portal: AddFilePortal, setIsMount: setIsMountAddFile } = usePortal();
+  const { Portal: DeleteFilePortal, setIsMount: setIsMountDeleteFile } = usePortal();
   const { Portal: AddFolderPortal, setIsMount: setIsMountAddFolder } = usePortal();
 
   const handleClickDirectory = (item: Directory) => {
@@ -77,6 +79,7 @@ const Detail = () => {
 
   const handleClickButton = (mode: "ADD" | "DELETE" | "UPDATE") => {
     setIsMountAddFile(mode === "ADD" && true);
+    setIsMountDeleteFile(mode === "DELETE" && true);
   };
   console.log(data);
   return (
@@ -98,6 +101,9 @@ const Detail = () => {
         </Col>
         <div>
           <Button onClick={() => handleClickButton("ADD")}>추가</Button>
+          <Button isDelete onClick={() => handleClickButton("DELETE")}>
+            삭제
+          </Button>
           <Item isTitle />
           {currentDirInfo.children?.map(
             (item) =>
@@ -115,9 +121,18 @@ const Detail = () => {
         children={
           <AddFileModal
             serverId={parseInt(id!)}
-            currentDir={currentDirInfo.name}
-            currentParent={currentDirInfo.parent}
+            currentDirInfo={currentDirInfo}
             setIsMountAddFile={setIsMountAddFile}
+            setCurrentDirInfo={setCurrentDirInfo}
+          />
+        }
+      />
+      <DeleteFilePortal
+        children={
+          <DeleteFileModal
+            serverId={parseInt(id!)}
+            currentDirInfo={currentDirInfo}
+            setIsMountDeleteFile={setIsMountDeleteFile}
             setCurrentDirInfo={setCurrentDirInfo}
           />
         }
