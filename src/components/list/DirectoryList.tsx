@@ -5,17 +5,17 @@ import usePortal from "../../hooks/usePortal";
 import { Server } from "../../store/Mockup";
 import DirectoryTree from "../DirectoryTree";
 import AddDirectoryModal from "../modals/AddDirectoryModal";
-interface DirectoryListProps {
-  data: Server;
-  serverId: number;
-}
-const DirectoryList = ({ data, serverId }: DirectoryListProps) => {
-  const currentDir = useAppSelector((state) => state.currentDir.value);
+import { selectServerData } from "../../store/slice/dataSlice";
+import { selectCurrentDir } from "../../store/slice/currentInfoSlice";
+interface DirectoryListProps {}
+const DirectoryList = () => {
+  const currentData = useAppSelector(selectServerData);
+  const currentDir = useAppSelector(selectCurrentDir);
   const dispatch = useAppDispatch();
   const { Portal: AddFolderPortal, setIsMount: setIsMountAddFolder } = usePortal();
   const { Portal: UpdateFolderPortal, setIsMount: setIsMountUpdateFolder } = usePortal();
   const { Portal: DeleteFolderPortal, setIsMount: setIsMountDeleteFolder } = usePortal();
-
+  console.log("serverdata", currentData);
   return (
     <Col>
       <ButtonBox>
@@ -26,11 +26,11 @@ const DirectoryList = ({ data, serverId }: DirectoryListProps) => {
         </Button>
       </ButtonBox>
       <TreeItemBox>
-        <DirectoryTree children={data.directories.children} />
+        <DirectoryTree children={currentData.directories.children} />
       </TreeItemBox>
-      <AddFolderPortal>
-        <AddDirectoryModal serverId={serverId} setIsMountAddDirectory={setIsMountAddFolder} />
-      </AddFolderPortal>
+      {/* <AddFolderPortal>
+        <AddDirectoryModal setIsMountAddDirectory={setIsMountAddFolder} />
+      </AddFolderPortal> */}
       {/* <DeleteFolderPortal></DeleteFolderPortal> */}
     </Col>
   );

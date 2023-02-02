@@ -1,26 +1,39 @@
+import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Row } from "../assets/style/common";
 import DirectoryList from "../components/list/DirectoryList";
 import FileList from "../components/list/FileList";
-import { useAppSelector } from "../store/hooks";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { selectCurrentServerId, setCurrentServer } from "../store/slice/currentInfoSlice";
 
 const Detail = () => {
+  // params
   const { id } = useParams();
 
   // Redux
-  const data = useAppSelector((state) =>
-    state.data.value.directories.find((server) => server.id === parseInt(id!))
-  );
+  const serverId = useAppSelector(selectCurrentServerId);
+  const dispatch = useAppDispatch();
 
+  // update serverId
+  useEffect(() => {
+    console.log("serverId", id);
+    if (id) {
+      dispatch(setCurrentServer({ id: parseInt(id) }));
+    }
+  }, [id]);
   return (
     <>
       <Link to="/">
         <BackButton>뒤로가기</BackButton>
       </Link>
       <Row>
-        {data && <DirectoryList data={data} serverId={parseInt(id!)} />}
-        <FileList serverId={parseInt(id!)} />
+        {serverId && (
+          <>
+            <DirectoryList />
+            <FileList />
+          </>
+        )}
       </Row>
     </>
   );

@@ -1,11 +1,14 @@
 import { useForm } from "react-hook-form";
 import { ModalWrapper, ConfirmButton, ClosingButton } from "../../assets/style/modal";
-
-import { addFile } from "../../store/slice/dataSlice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { File } from "../../store/Mockup";
 import Input from "../Input";
-import { setCurrentDir } from "../../store/slice/currentDirSlice";
+import {
+  selectCurrentDir,
+  selectCurrentFile,
+  setCurrentDir,
+} from "../../store/slice/currentInfoSlice";
+import { addItem } from "../../store/slice/dataSlice";
 interface AddFileForm {
   name: string;
   size: number;
@@ -15,9 +18,8 @@ interface AddFileModalProps {
   setIsMountAddFile: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const AddFileModal = ({ serverId, setIsMountAddFile }: AddFileModalProps) => {
-  const { name, children, parent, selectedFile } = useAppSelector(
-    (state) => state.currentDir.value
-  );
+  const currentDir = useAppSelector(selectCurrentDir);
+  const currentFile = useAppSelector((state) => selectCurrentFile(state));
   const dispatch = useAppDispatch();
   const {
     register,
@@ -27,22 +29,19 @@ const AddFileModal = ({ serverId, setIsMountAddFile }: AddFileModalProps) => {
 
   // 추가 버튼 클릭 시
   const onValid = (form: AddFileForm) => {
-    console.log(children.filter((item) => item.name === form.name));
-    if (children.find((item) => item.name === form.name))
+    if (currentDir.children.find((item) => item.name === form.name))
       return alert("이름이 같은 파일은 생성할 수 없습니다!");
-    const file: File = {
+    const newItem: File = {
       name: form.name,
       type: "FILE",
       file_size: form.size,
       modified_date: Date.now(),
     };
-    dispatch(addFile({ serverId, file, currentDir: name, currentParent: parent }));
+    dispatch(addItem({ serverId, newItem, currentDir }));
     dispatch(
       setCurrentDir({
-        name,
-        parent,
-        selectedFile,
-        children: [...children, file],
+        ...currentDir,
+        children: [...currentDir.children, newItem],
       })
     );
     setIsMountAddFile(false);

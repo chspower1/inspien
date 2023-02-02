@@ -4,8 +4,8 @@ import { ModalWrapper, ConfirmButton, ClosingButton } from "../../assets/style/m
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { Directory, File } from "../../store/Mockup";
 import Input from "../Input";
-import { setCurrentDir } from "../../store/slice/currentDirSlice";
-import { addDirectory } from "../../store/slice/dataSlice";
+import { selectCurrentDir, setCurrentDir } from "../../store/slice/currentInfoSlice";
+import { addItem } from "../../store/slice/dataSlice";
 interface AddDirectoryForm {
   name: string;
 }
@@ -14,9 +14,8 @@ interface AddDirectoryModalProps {
   setIsMountAddDirectory: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const AddDirectoryModal = ({ serverId, setIsMountAddDirectory }: AddDirectoryModalProps) => {
-  const { name, children, parent, selectedFile } = useAppSelector(
-    (state) => state.currentDir.value
-  );
+  const currentDir = useAppSelector(selectCurrentDir);
+  const currentFile = useAppSelector((state) => state.currentInfo.value.file);
   const dispatch = useAppDispatch();
   const {
     register,
@@ -26,29 +25,25 @@ const AddDirectoryModal = ({ serverId, setIsMountAddDirectory }: AddDirectoryMod
 
   // 추가 버튼 클릭 시
   const onValid = (form: AddDirectoryForm) => {
-    if (children.find((item) => item.name === form.name))
+    if (currentDir.children.find((item) => item.name === form.name))
       return alert("이름이 같은 파일 및 폴더는 생성할 수 없습니다!");
-    const newDir: Directory = {
+    const newItem: Directory = {
       name: form.name,
       children: [],
-      parent,
+      parent: currentDir.parent,
       type: "DIRECTORY",
     };
     dispatch(
-      addDirectory({
+      addItem({
         serverId,
-        currentDir: name,
-        currentParent: parent,
-        children,
-        newDir,
+        currentDir,
+        newItem,
       })
     );
     dispatch(
       setCurrentDir({
-        name,
-        parent,
-        selectedFile,
-        children: [...children, newDir],
+        ...currentDir,
+        children: [...currentDir.children, newItem],
       })
     );
     setIsMountAddDirectory(false);

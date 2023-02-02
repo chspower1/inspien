@@ -1,29 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import Item from "../../components/Item";
-import { CurrentDir } from "../../types/currentInfo";
+import { AddResponse, DeleteResponse, UpdateResponse } from "../../types/slice/data";
 import { searchInChildren } from "../../utils/searchInChildren";
 import { RootState } from "../configureStore";
-import { Children, Directory, File, MockupState } from "../Mockup";
+import { MockupState } from "../Mockup";
 
-interface Response {
-  serverId: number;
-  currentDir: CurrentDir;
-}
-interface AddResponse extends Response {
-  newItem: File | Directory;
-}
-interface DeleteResponse extends Response {
-  targetName: string;
-}
-interface UpdateResponse extends DeleteResponse {
-  targetName: string;
-  newName: string;
-}
-
-interface AddDirectoryResponse extends Response {
-  newDir: Directory;
-  children: Children;
-}
 const initialState = {
   value: MockupState,
 };

@@ -1,40 +1,40 @@
 import { ClosingButton, ConfirmButton, ModalWrapper } from "../../assets/style/modal";
-import { removeFile } from "../../store/slice/dataSlice";
+import { removeItem } from "../../store/slice/dataSlice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { setCurrentDir } from "../../store/slice/currentDirSlice";
+import {
+  selectCurrentDir,
+  selectCurrentFile,
+  setCurrentDir,
+} from "../../store/slice/currentInfoSlice";
 interface DeleteFileModalProps {
   serverId: number;
   setIsMountDeleteFile: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const DeleteFileModal = ({ serverId, setIsMountDeleteFile }: DeleteFileModalProps) => {
-  const { name, children, parent, selectedFile } = useAppSelector(
-    (state) => state.currentDir.value
-  );
+  const currentDir = useAppSelector(selectCurrentDir);
+  const currentFile = useAppSelector(selectCurrentFile);
   const dispatch = useAppDispatch();
 
   const handleClickDeleteButton = () => {
     dispatch(
       setCurrentDir({
-        name,
-        parent,
-        selectedFile,
-        children: children.filter((item) => item.name !== selectedFile),
+        ...currentDir,
+        children: currentDir.children.filter((item) => item.name !== currentFile.name),
       })
     );
 
     dispatch(
-      removeFile({
+      removeItem({
         serverId,
-        fileName: selectedFile!,
-        currentDir: name,
-        currentParent: parent,
+        currentDir,
+        targetName: currentDir.name,
       })
     );
     setIsMountDeleteFile(false);
   };
   return (
     <ModalWrapper>
-      <div>정말 {selectedFile}를 삭제하시겠습니까?</div>
+      <div>정말 {currentDir.name}를 삭제하시겠습니까?</div>
       <ConfirmButton onClick={handleClickDeleteButton}>삭제</ConfirmButton>
       <ClosingButton onClick={() => setIsMountDeleteFile(false)}>취소</ClosingButton>
     </ModalWrapper>

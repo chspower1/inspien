@@ -1,25 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  CurrentDir,
+  CurrentFile,
+  CurrentInfoState,
+  CurrentServer,
+} from "../../types/slice/currentInfo";
+import { RootState } from "../configureStore";
 import { Children } from "../Mockup";
 
-interface CurrentInfoState {
-  value: {
-    directory: CurrentDir;
-    file: CurrentFile;
-    server: CurrentServer;
-  };
-}
-interface CurrentDir {
-  name: string;
-  parent: string | undefined;
-  children: Children;
-}
-interface CurrentFile {
-  name: undefined | string;
-  parent: undefined | string;
-}
-interface CurrentServer {
-  id: number | undefined;
-}
 const initialState: CurrentInfoState = {
   value: {
     directory: {
@@ -54,4 +42,7 @@ const currentInfoSlice = createSlice({
 });
 
 export const { setCurrentDir, setCurrentFile, setCurrentServer } = currentInfoSlice.actions;
+export const selectCurrentDir = (state: RootState) => state.currentInfo.value.directory;
+export const selectCurrentFile = (state: RootState) => state.currentInfo.value.file;
+export const selectCurrentServerId = (state: RootState) => state.currentInfo.value.server.id;
 export default currentInfoSlice.reducer;
