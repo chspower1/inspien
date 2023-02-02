@@ -48,14 +48,7 @@ export const MockupState: MockupDate = {
                           name: "home2",
                           type: "DIRECTORY",
                           parent: "/home/home2/home",
-                          children: [
-                            {
-                              name: ".asd",
-                              type: "FILE",
-                              file_size: 32819,
-                              modified_date: 1674035700000,
-                            },
-                          ],
+                          children: [],
                         },
                       ],
                     },
