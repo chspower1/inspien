@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
 import { ModalWrapper, ConfirmButton, ClosingButton } from "../../assets/style/modal";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { File } from "../../store/Mockup";
 import Input from "../Input";
 import {
   selectCurrentDir,
@@ -9,15 +8,17 @@ import {
   setCurrentDir,
 } from "../../store/slice/currentInfoSlice";
 import { addItem } from "../../store/slice/dataSlice";
+import { Directory, File } from "../../types/mockupData";
 interface AddFileForm {
   name: string;
   size: number;
 }
-interface AddFileModalProps {
+interface AddItemModalProps {
   serverId: number;
   setIsMountAddFile: React.Dispatch<React.SetStateAction<boolean>>;
+  type: "DIRECTORY" | "FILE";
 }
-const AddFileModal = ({ serverId, setIsMountAddFile }: AddFileModalProps) => {
+const AddItemModal = ({ serverId, setIsMountAddFile, type }: AddItemModalProps) => {
   const currentDir = useAppSelector(selectCurrentDir);
   const currentFile = useAppSelector((state) => selectCurrentFile(state));
   const dispatch = useAppDispatch();
@@ -31,12 +32,20 @@ const AddFileModal = ({ serverId, setIsMountAddFile }: AddFileModalProps) => {
   const onValid = (form: AddFileForm) => {
     if (currentDir.children.find((item) => item.name === form.name))
       return alert("이름이 같은 파일은 생성할 수 없습니다!");
-    const newItem: File = {
-      name: form.name,
-      type: "FILE",
-      file_size: form.size,
-      modified_date: Date.now(),
-    };
+    const newItem: File | Directory =
+      type === "FILE"
+        ? {
+            name: form.name,
+            type,
+            file_size: form.size,
+            modified_date: Date.now(),
+          }
+        : {
+            name: form.name,
+            type,
+            children: [],
+            parent: currentDir.parent,
+          };
     dispatch(addItem({ serverId, newItem, currentDir }));
     dispatch(
       setCurrentDir({
@@ -73,4 +82,4 @@ const AddFileModal = ({ serverId, setIsMountAddFile }: AddFileModalProps) => {
   );
 };
 
-export default AddFileModal;
+export default AddItemModal;

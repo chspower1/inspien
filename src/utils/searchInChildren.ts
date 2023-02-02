@@ -1,4 +1,4 @@
-import { Children, Directory } from "../store/Mockup";
+import { Children, Directory } from "../types/mockupData";
 
 export const searchInChildren = (
   children: Children,

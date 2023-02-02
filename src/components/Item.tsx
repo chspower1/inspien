@@ -2,7 +2,7 @@ import { useState } from "react";
 import dayjs from "dayjs";
 import styled from "styled-components";
 import { Row } from "../assets/style/common";
-import type { Directory, File } from "../store/Mockup";
+import { Directory, File } from "../types/mockupData";
 
 interface ItemProps {
   isTitle?: boolean;

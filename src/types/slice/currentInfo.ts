@@ -1,4 +1,4 @@
-import { Children } from "../../store/Mockup";
+import { Children } from "../mockupData";
 
 export interface CurrentInfoState {
   value: {

@@ -6,7 +6,6 @@ import {
   CurrentServer,
 } from "../../types/slice/currentInfo";
 import { RootState } from "../configureStore";
-import { Children } from "../Mockup";
 
 const initialState: CurrentInfoState = {
   value: {

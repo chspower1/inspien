@@ -1,16 +1,18 @@
 import { ClosingButton, ConfirmButton, ModalWrapper } from "../../assets/style/modal";
-import { removeItem } from "../../store/slice/dataSlice";
+
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
   selectCurrentDir,
   selectCurrentFile,
   setCurrentDir,
 } from "../../store/slice/currentInfoSlice";
-interface DeleteFileModalProps {
+import { removeItem } from "../../store/slice/dataSlice";
+interface DeleteItemModalProps {
   serverId: number;
   setIsMountDeleteFile: React.Dispatch<React.SetStateAction<boolean>>;
+  type: "FILE" | "DIRECTORY";
 }
-const DeleteFileModal = ({ serverId, setIsMountDeleteFile }: DeleteFileModalProps) => {
+const DeleteItemModal = ({ serverId, setIsMountDeleteFile }: DeleteItemModalProps) => {
   const currentDir = useAppSelector(selectCurrentDir);
   const currentFile = useAppSelector(selectCurrentFile);
   const dispatch = useAppDispatch();
@@ -40,4 +42,4 @@ const DeleteFileModal = ({ serverId, setIsMountDeleteFile }: DeleteFileModalProp
     </ModalWrapper>
   );
 };
-export default DeleteFileModal;
+export default DeleteItemModal;

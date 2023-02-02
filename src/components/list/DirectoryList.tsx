@@ -2,9 +2,7 @@ import { Col } from "../../assets/style/common";
 import { Button, ButtonBox, TreeItemBox } from "../../assets/style/content";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import usePortal from "../../hooks/usePortal";
-import { Server } from "../../store/Mockup";
 import DirectoryTree from "../DirectoryTree";
-import AddDirectoryModal from "../modals/AddDirectoryModal";
 import { selectServerData } from "../../store/slice/dataSlice";
 import { selectCurrentDir } from "../../store/slice/currentInfoSlice";
 interface DirectoryListProps {}

@@ -1,4 +1,4 @@
-import { Children } from "../store/Mockup";
+import { Children } from "../types/mockupData";
 
 export const checkDirInChildren = (children: Children) => {
   console.log(children.filter((item) => item.type === "DIRECTORY"));

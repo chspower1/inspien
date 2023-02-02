@@ -9,8 +9,8 @@ import {
   setCurrentFile,
 } from "../../store/slice/currentInfoSlice";
 import Item from "../Item";
-import AddFileModal from "../modals/AddFileModal";
-import DeleteFileModal from "../modals/DeleteFileModal";
+import AddItemModal from "../modals/AddItemModal";
+import DeleteItemModal from "../modals/DeleteItemModal";
 
 interface FileListProps {}
 const FileList = () => {
@@ -42,10 +42,14 @@ const FileList = () => {
           )
       )}
       <AddFilePortal>
-        <AddFileModal serverId={serverId!} setIsMountAddFile={setIsMountAddFile} />
+        <AddItemModal type="FILE" serverId={serverId!} setIsMountAddFile={setIsMountAddFile} />
       </AddFilePortal>
       <DeleteFilePortal>
-        <DeleteFileModal serverId={serverId!} setIsMountDeleteFile={setIsMountDeleteFile} />
+        <DeleteItemModal
+          type="FILE"
+          serverId={serverId!}
+          setIsMountDeleteFile={setIsMountDeleteFile}
+        />
       </DeleteFilePortal>
     </div>
   );
