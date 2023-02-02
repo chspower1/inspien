@@ -4,15 +4,16 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
   selectCurrentDir,
   selectCurrentFile,
+  selectCurrentServerId,
   setCurrentDir,
 } from "../../store/slice/currentInfoSlice";
 import { removeItem } from "../../store/slice/dataSlice";
 interface DeleteItemModalProps {
-  serverId: number;
   setIsMountDeleteFile: React.Dispatch<React.SetStateAction<boolean>>;
   type: "FILE" | "DIRECTORY";
 }
-const DeleteItemModal = ({ serverId, setIsMountDeleteFile }: DeleteItemModalProps) => {
+const DeleteItemModal = ({ setIsMountDeleteFile }: DeleteItemModalProps) => {
+  const serverId = useAppSelector(selectCurrentServerId);
   const currentDir = useAppSelector(selectCurrentDir);
   const currentFile = useAppSelector(selectCurrentFile);
   const dispatch = useAppDispatch();

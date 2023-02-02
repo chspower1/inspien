@@ -5,30 +5,34 @@ import usePortal from "../../hooks/usePortal";
 import DirectoryTree from "../DirectoryTree";
 import { selectServerData } from "../../store/slice/dataSlice";
 import { selectCurrentDir } from "../../store/slice/currentInfoSlice";
+import AddItemModal from "../modals/AddItemModal";
 interface DirectoryListProps {}
 const DirectoryList = () => {
+  // redux state
   const currentData = useAppSelector(selectServerData);
   const currentDir = useAppSelector(selectCurrentDir);
   const dispatch = useAppDispatch();
-  const { Portal: AddFolderPortal, setIsMount: setIsMountAddFolder } = usePortal();
-  const { Portal: UpdateFolderPortal, setIsMount: setIsMountUpdateFolder } = usePortal();
-  const { Portal: DeleteFolderPortal, setIsMount: setIsMountDeleteFolder } = usePortal();
-  console.log("serverdata", currentData);
+
+  // modal
+  const { Portal: AddDirectoryPortal, setIsMount: setIsMountAddDirectory } = usePortal();
+  const { Portal: UpdateDirectoryPortal, setIsMount: setIsMountUpdateDirectory } = usePortal();
+  const { Portal: DeleteDirectoryPortal, setIsMount: setIsMountDeleteDirectory } = usePortal();
+
   return (
     <Col>
       <ButtonBox>
-        <Button onClick={() => setIsMountAddFolder(true)}>추가</Button>
-        <Button onClick={() => setIsMountUpdateFolder(true)}>수정</Button>
-        <Button isDelete onClick={() => setIsMountDeleteFolder(true)}>
+        <Button onClick={() => setIsMountAddDirectory(true)}>추가</Button>
+        <Button onClick={() => setIsMountUpdateDirectory(true)}>수정</Button>
+        <Button isDelete onClick={() => setIsMountDeleteDirectory(true)}>
           삭제
         </Button>
       </ButtonBox>
       <TreeItemBox>
-        <DirectoryTree children={currentData.directories.children} />
+        <DirectoryTree children={currentData.directories} />
       </TreeItemBox>
-      {/* <AddFolderPortal>
-        <AddDirectoryModal setIsMountAddDirectory={setIsMountAddFolder} />
-      </AddFolderPortal> */}
+      <AddDirectoryPortal>
+        <AddItemModal type="DIRECTORY" setIsMountAddItem={setIsMountAddDirectory} />
+      </AddDirectoryPortal>
       {/* <DeleteFolderPortal></DeleteFolderPortal> */}
     </Col>
   );

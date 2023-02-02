@@ -16,7 +16,7 @@ const dataSlice = createSlice({
       const { currentDir, newItem, serverId } = action.payload;
 
       const targetDirectory = searchInChildren(
-        state.value.directories[serverId - 1].directories.children,
+        state.value.directories[serverId - 1].directories,
         currentDir.name,
         currentDir.parent
       );
@@ -26,7 +26,7 @@ const dataSlice = createSlice({
     removeItem: (state, action: PayloadAction<DeleteResponse>) => {
       const { currentDir, targetName, serverId } = action.payload;
       const targetDirectory = searchInChildren(
-        state.value.directories[serverId - 1].directories.children,
+        state.value.directories[serverId - 1].directories,
         currentDir.name,
         currentDir.parent
       );
@@ -39,7 +39,7 @@ const dataSlice = createSlice({
     updateItem: (state, action: PayloadAction<UpdateResponse>) => {
       const { currentDir, targetName, newName, serverId } = action.payload;
       const targetDirectory = searchInChildren(
-        state.value.directories[serverId - 1].directories.children,
+        state.value.directories[serverId - 1].directories,
         currentDir.name,
         currentDir.parent
       );

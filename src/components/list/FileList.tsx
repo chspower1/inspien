@@ -14,7 +14,6 @@ import DeleteItemModal from "../modals/DeleteItemModal";
 
 interface FileListProps {}
 const FileList = () => {
-  const serverId = useAppSelector((state) => selectCurrentServerId(state));
   const currentDir = useAppSelector((state) => selectCurrentDir(state));
   const currentFile = useAppSelector((state) => selectCurrentFile(state));
   console.log("FileList", currentDir);
@@ -42,14 +41,10 @@ const FileList = () => {
           )
       )}
       <AddFilePortal>
-        <AddItemModal type="FILE" serverId={serverId!} setIsMountAddFile={setIsMountAddFile} />
+        <AddItemModal type="FILE" setIsMountAddItem={setIsMountAddFile} />
       </AddFilePortal>
       <DeleteFilePortal>
-        <DeleteItemModal
-          type="FILE"
-          serverId={serverId!}
-          setIsMountDeleteFile={setIsMountDeleteFile}
-        />
+        <DeleteItemModal type="FILE" setIsMountDeleteFile={setIsMountDeleteFile} />
       </DeleteFilePortal>
     </div>
   );

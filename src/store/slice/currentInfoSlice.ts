@@ -19,7 +19,7 @@ const initialState: CurrentInfoState = {
       parent: undefined,
     },
     server: {
-      id: undefined,
+      id: 1,
     },
   },
 };

@@ -5,7 +5,7 @@ export interface MockupDate {
 export interface Server {
   id: number;
   serverName: string;
-  directories: Directory;
+  directories: Directory[];
 }
 export interface Directory {
   name: string;

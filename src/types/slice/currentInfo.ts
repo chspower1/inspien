@@ -17,5 +17,5 @@ export interface CurrentFile {
   parent: undefined | string;
 }
 export interface CurrentServer {
-  id: number | undefined;
+  id: number;
 }
