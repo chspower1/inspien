@@ -19,12 +19,19 @@ const DirectoryList = () => {
   const { Portal: UpdateDirectoryPortal, setIsMount: setIsMountUpdateDirectory } = usePortal();
   const { Portal: DeleteDirectoryPortal, setIsMount: setIsMountDeleteDirectory } = usePortal();
 
+  const handleClickDeleteButton = () => {
+    // 예외처리
+    if (currentDir.parent === undefined) return alert("최상위 폴더는 삭제할 수 없습니다.");
+    if (currentDir.children.length > 0)
+      return alert("하위에 폴더나 파일이 있으면 삭제할 수 없습니다!");
+    setIsMountDeleteDirectory(true);
+  };
   return (
     <Col>
       <ButtonBox>
         <Button onClick={() => setIsMountAddDirectory(true)}>추가</Button>
         <Button onClick={() => setIsMountUpdateDirectory(true)}>수정</Button>
-        <Button isDelete onClick={() => setIsMountDeleteDirectory(true)}>
+        <Button isDelete onClick={handleClickDeleteButton}>
           삭제
         </Button>
       </ButtonBox>

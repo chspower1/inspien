@@ -21,10 +21,6 @@ const DeleteItemModal = ({ setIsMount, type }: DeleteItemModalProps) => {
 
   const handleClickDeleteButton = () => {
     if (type === "DIRECTORY") {
-      // 하위경로에 파일or폴더 있을경우 예외처리
-      if (currentDir.children.length > 0)
-        return alert("하위에 폴더나 파일이 있으면 삭제할 수 없습니다!");
-
       // delete Item
       dispatch(
         removeDirectory({
@@ -33,9 +29,6 @@ const DeleteItemModal = ({ setIsMount, type }: DeleteItemModalProps) => {
         })
       );
     } else if (type === "FILE") {
-      // 최상위 폴더 예외처리
-      if (currentFile.name === undefined) return alert("최상위 폴더는 삭제할 수 없습니다.");
-
       // update currentDir
       dispatch(
         setCurrentDir({
