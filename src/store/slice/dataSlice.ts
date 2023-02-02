@@ -1,22 +1,22 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import Item from "../../components/Item";
+import { CurrentDir } from "../../types/currentInfo";
 import { searchInChildren } from "../../utils/searchInChildren";
 import { RootState } from "../configureStore";
 import { Children, Directory, File, MockupState } from "../Mockup";
 
 interface Response {
   serverId: number;
-  currentParent: string | undefined;
-  currentDir: string;
+  currentDir: CurrentDir;
 }
-interface AddFileResponse extends Response {
-  file: File;
+interface AddResponse extends Response {
+  newItem: File | Directory;
 }
-interface DeleteFileResponse extends Response {
-  fileName: string;
+interface DeleteResponse extends Response {
+  targetName: string;
 }
-interface UpdateFileResponse extends Response {
-  oldName: string;
+interface UpdateResponse extends DeleteResponse {
+  targetName: string;
   newName: string;
 }
 
@@ -32,57 +32,47 @@ const dataSlice = createSlice({
   name: "dataSlice",
   initialState,
   reducers: {
-    addFile: (state, action: PayloadAction<AddFileResponse>) => {
-      const { currentDir, currentParent, file, serverId } = action.payload;
+    addItem: (state, action: PayloadAction<AddResponse>) => {
+      const { currentDir, newItem, serverId } = action.payload;
+
       const targetDirectory = searchInChildren(
         state.value.directories[serverId - 1].directories.children,
-        currentDir,
-        currentParent
+        currentDir.name,
+        currentDir.parent
       );
-      targetDirectory?.children.push(file);
+      targetDirectory?.children.push(newItem);
       console.log(targetDirectory?.name, targetDirectory?.parent);
     },
-    removeFile: (state, action: PayloadAction<DeleteFileResponse>) => {
-      const { currentDir, currentParent, fileName, serverId } = action.payload;
+    removeItem: (state, action: PayloadAction<DeleteResponse>) => {
+      const { currentDir, targetName, serverId } = action.payload;
       const targetDirectory = searchInChildren(
         state.value.directories[serverId - 1].directories.children,
-        currentDir,
-        currentParent
+        currentDir.name,
+        currentDir.parent
       );
-      const targetIndex = targetDirectory?.children.findIndex((item) => item.name === fileName);
+      const targetIndex = targetDirectory?.children.findIndex((item) => item.name === targetName);
       console.log(targetIndex);
       if (targetIndex !== undefined && targetIndex > -1) {
         targetDirectory?.children.splice(targetIndex, 1);
       }
     },
-    updateFile: (state, action: PayloadAction<UpdateFileResponse>) => {
-      const { currentDir, currentParent, oldName, newName, serverId } = action.payload;
+    updateItem: (state, action: PayloadAction<UpdateResponse>) => {
+      const { currentDir, targetName, newName, serverId } = action.payload;
       const targetDirectory = searchInChildren(
         state.value.directories[serverId - 1].directories.children,
-        currentDir,
-        currentParent
+        currentDir.name,
+        currentDir.parent
       );
       targetDirectory?.children.forEach((item) => {
-        if (item.name === oldName) {
+        if (item.name === targetName) {
           item.name = newName;
         }
       });
     },
-    addDirectory: (state, action: PayloadAction<AddDirectoryResponse>) => {
-      const { currentDir, currentParent, newDir, serverId } = action.payload;
-      const targetDirectory = searchInChildren(
-        state.value.directories[serverId - 1].directories.children,
-        currentDir,
-        currentParent
-      );
-      targetDirectory?.children.push(newDir);
-      console.log(targetDirectory?.name, targetDirectory?.parent);
-    },
-    removeDirectory: (state, action: PayloadAction<number>) => {},
-    updateDirectory: (state, action: PayloadAction<Directory | File>) => {},
   },
 });
 
-export const { addFile, removeFile, updateFile, addDirectory, removeDirectory, updateDirectory } =
-  dataSlice.actions;
+export const { addItem, removeItem, updateItem } = dataSlice.actions;
+export const selectServerData = (state: RootState) =>
+  state.data.value.directories[state.currentInfo.value.server.id! - 1];
 export default dataSlice.reducer;
