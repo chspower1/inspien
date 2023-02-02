@@ -1,3 +1,4 @@
+import { Row } from "../../assets/style/common";
 import { ClosingButton, ConfirmButton, ModalWrapper } from "../../assets/style/modal";
 
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
@@ -21,6 +22,14 @@ const DeleteItemModal = ({ setIsMount, type }: DeleteItemModalProps) => {
 
   const handleClickDeleteButton = () => {
     if (type === "DIRECTORY") {
+      // update currentDir
+      dispatch(
+        setCurrentDir({
+          children: [],
+          name: "",
+          parent: undefined,
+        })
+      );
       // delete Item
       dispatch(
         removeDirectory({
@@ -53,8 +62,10 @@ const DeleteItemModal = ({ setIsMount, type }: DeleteItemModalProps) => {
       <div>
         정말 {type === "DIRECTORY" ? currentDir.name : currentFile.name}를 삭제하시겠습니까?
       </div>
-      <ConfirmButton onClick={handleClickDeleteButton}>삭제</ConfirmButton>
-      <ClosingButton onClick={() => setIsMount(false)}>취소</ClosingButton>
+      <Row>
+        <ConfirmButton onClick={handleClickDeleteButton}>삭제</ConfirmButton>
+        <ClosingButton onClick={() => setIsMount(false)}>취소</ClosingButton>
+      </Row>
     </ModalWrapper>
   );
 };

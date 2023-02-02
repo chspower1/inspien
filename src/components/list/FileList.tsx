@@ -11,6 +11,7 @@ import {
 import Item from "../Item";
 import AddItemModal from "../modals/AddItemModal";
 import DeleteItemModal from "../modals/DeleteItemModal";
+import UpdateItemModal from "../modals/UpdateItemModal";
 
 interface FileListProps {}
 const FileList = () => {
@@ -22,16 +23,17 @@ const FileList = () => {
   const { Portal: DeleteFilePortal, setIsMount: setIsMountDeleteFile } = usePortal();
   const { Portal: UpdateFilePortal, setIsMount: setIsMountUpdateFile } = usePortal();
 
-  const handleClickDeleteButton = () => {
+  const handleClickDeleteOrUpdateButton = (mode: "DELETE" | "UPDATE") => {
     // 파일을 선택하지 않았을 때 예외처리
     if (currentFile.name === undefined) return alert("파일을 선택해 주세요!");
-    setIsMountDeleteFile(true);
+    setIsMountDeleteFile(mode === "DELETE");
+    setIsMountUpdateFile(mode === "UPDATE");
   };
   return (
     <div>
       <Button onClick={() => setIsMountAddFile(true)}>추가</Button>
-      <Button onClick={() => setIsMountUpdateFile(true)}>수정</Button>
-      <Button isDelete onClick={handleClickDeleteButton}>
+      <Button onClick={() => handleClickDeleteOrUpdateButton("UPDATE")}>수정</Button>
+      <Button isDelete onClick={() => handleClickDeleteOrUpdateButton("DELETE")}>
         삭제
       </Button>
       <Item isTitle />
@@ -39,7 +41,7 @@ const FileList = () => {
         (item) =>
           item.type === "FILE" && (
             <div
-              key={item.name}
+              key={currentDir.parent + currentDir.name + item.name}
               onClick={() => dispatch(setCurrentFile({ name: item.name, parent: currentDir.name }))}
             >
               <Item isActive={currentFile.name === item.name} item={item} />
@@ -52,6 +54,9 @@ const FileList = () => {
       <DeleteFilePortal>
         <DeleteItemModal type="FILE" setIsMount={setIsMountDeleteFile} />
       </DeleteFilePortal>
+      <UpdateFilePortal>
+        <UpdateItemModal type="FILE" setIsMount={setIsMountUpdateFile} />
+      </UpdateFilePortal>
     </div>
   );
 };
