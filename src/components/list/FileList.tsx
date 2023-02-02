@@ -21,11 +21,17 @@ const FileList = () => {
   const { Portal: AddFilePortal, setIsMount: setIsMountAddFile } = usePortal();
   const { Portal: DeleteFilePortal, setIsMount: setIsMountDeleteFile } = usePortal();
   const { Portal: UpdateFilePortal, setIsMount: setIsMountUpdateFile } = usePortal();
+
+  const handleClickDeleteButton = () => {
+    // 파일을 선택하지 않았을 때 예외처리
+    if (currentFile.name === undefined) return alert("파일을 선택해 주세요!");
+    setIsMountDeleteFile(true);
+  };
   return (
     <div>
       <Button onClick={() => setIsMountAddFile(true)}>추가</Button>
       <Button onClick={() => setIsMountUpdateFile(true)}>수정</Button>
-      <Button isDelete onClick={() => setIsMountDeleteFile(true)}>
+      <Button isDelete onClick={handleClickDeleteButton}>
         삭제
       </Button>
       <Item isTitle />

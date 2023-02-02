@@ -7,7 +7,7 @@ import {
   selectCurrentServerId,
   setCurrentDir,
 } from "../../store/slice/currentInfoSlice";
-import { removeItem } from "../../store/slice/dataSlice";
+import { removeDirectory, removeItem } from "../../store/slice/dataSlice";
 import { ItemType } from "../../types/mockupData";
 interface DeleteItemModalProps {
   setIsMount: React.Dispatch<React.SetStateAction<boolean>>;
@@ -27,15 +27,15 @@ const DeleteItemModal = ({ setIsMount, type }: DeleteItemModalProps) => {
 
       // delete Item
       dispatch(
-        removeItem({
+        removeDirectory({
           serverId,
           currentDir,
-          targetName: currentDir.name,
         })
       );
     } else if (type === "FILE") {
       // 최상위 폴더 예외처리
       if (currentFile.name === undefined) return alert("최상위 폴더는 삭제할 수 없습니다.");
+
       // update currentDir
       dispatch(
         setCurrentDir({
@@ -57,7 +57,9 @@ const DeleteItemModal = ({ setIsMount, type }: DeleteItemModalProps) => {
   };
   return (
     <ModalWrapper>
-      <div>정말 {currentDir.name}를 삭제하시겠습니까?</div>
+      <div>
+        정말 {type === "DIRECTORY" ? currentDir.name : currentFile.name}를 삭제하시겠습니까?
+      </div>
       <ConfirmButton onClick={handleClickDeleteButton}>삭제</ConfirmButton>
       <ClosingButton onClick={() => setIsMount(false)}>취소</ClosingButton>
     </ModalWrapper>
