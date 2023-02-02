@@ -43,4 +43,7 @@ export const OpenOrCloseButton = styled.button`
   background-color: ${({ theme }) => theme.main};
   color: white;
   margin-right: 10px;
+  &:hover {
+    background-color: ${({ theme }) => theme.mainHover};
+  }
 `;

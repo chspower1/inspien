@@ -4,20 +4,25 @@ import { searchInChildren } from "../../utils/searchInChildren";
 import { RootState } from "../configureStore";
 import { Children, Directory, File, MockupState } from "../Mockup";
 
-interface FileResponse {
+interface Response {
   serverId: number;
   currentParent: string | undefined;
   currentDir: string;
 }
-interface AddFileResponse extends FileResponse {
+interface AddFileResponse extends Response {
   file: File;
 }
-interface DeleteFileResponse extends FileResponse {
+interface DeleteFileResponse extends Response {
   fileName: string;
 }
-interface UpdateFileResponse extends FileResponse {
+interface UpdateFileResponse extends Response {
   oldName: string;
   newName: string;
+}
+
+interface AddDirectoryResponse extends Response {
+  newDir: Directory;
+  children: Children;
 }
 const initialState = {
   value: MockupState,
@@ -63,7 +68,16 @@ const dataSlice = createSlice({
         }
       });
     },
-    addDirectory: (state, action: PayloadAction<Directory | File>) => {},
+    addDirectory: (state, action: PayloadAction<AddDirectoryResponse>) => {
+      const { currentDir, currentParent, newDir, serverId } = action.payload;
+      const targetDirectory = searchInChildren(
+        state.value.directories[serverId - 1].directories.children,
+        currentDir,
+        currentParent
+      );
+      targetDirectory?.children.push(newDir);
+      console.log(targetDirectory?.name, targetDirectory?.parent);
+    },
     removeDirectory: (state, action: PayloadAction<number>) => {},
     updateDirectory: (state, action: PayloadAction<Directory | File>) => {},
   },

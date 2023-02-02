@@ -19,7 +19,7 @@ const Detail = () => {
         <BackButton>뒤로가기</BackButton>
       </Link>
       <Row>
-        {data && <DirectoryList data={data} />}
+        {data && <DirectoryList data={data} serverId={parseInt(id!)} />}
         <FileList serverId={parseInt(id!)} />
       </Row>
     </>
