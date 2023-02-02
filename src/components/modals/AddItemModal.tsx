@@ -9,16 +9,16 @@ import {
   setCurrentDir,
 } from "../../store/slice/currentInfoSlice";
 import { addItem } from "../../store/slice/dataSlice";
-import { Directory, File, ItemType } from "../../types/mockupData";
+import { Directory, File, Item, ItemType } from "../../types/mockupData";
 interface AddItemForm {
   name: string;
   size?: number;
 }
 interface AddItemModalProps {
-  setIsMountAddItem: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsMount: React.Dispatch<React.SetStateAction<boolean>>;
   type: ItemType;
 }
-const AddItemModal = ({ setIsMountAddItem, type }: AddItemModalProps) => {
+const AddItemModal = ({ setIsMount, type }: AddItemModalProps) => {
   // redux state
   const serverId = useAppSelector(selectCurrentServerId);
   const currentDir = useAppSelector(selectCurrentDir);
@@ -35,8 +35,8 @@ const AddItemModal = ({ setIsMountAddItem, type }: AddItemModalProps) => {
   // 추가 버튼 클릭 시
   const onValid = (form: AddItemForm) => {
     if (currentDir.children.find((item) => item.name === form.name))
-      return alert("이름이 같은 파일은 생성할 수 없습니다!");
-    const newItem: File | Directory =
+      return alert("동일한 경로에는 같은 이름을 가진 파일 및 폴더를 생성할 수 없습니다!");
+    const newItem: Item =
       type === "FILE"
         ? {
             name: form.name,
@@ -57,7 +57,7 @@ const AddItemModal = ({ setIsMountAddItem, type }: AddItemModalProps) => {
         children: [...currentDir.children, newItem],
       })
     );
-    setIsMountAddItem(false);
+    setIsMount(false);
   };
   return (
     <ModalWrapper>
@@ -95,7 +95,7 @@ const AddItemModal = ({ setIsMountAddItem, type }: AddItemModalProps) => {
 
         <ConfirmButton>추가</ConfirmButton>
       </form>
-      <ClosingButton onClick={() => setIsMountAddItem(false)}>취소</ClosingButton>
+      <ClosingButton onClick={() => setIsMount(false)}>취소</ClosingButton>
     </ModalWrapper>
   );
 };

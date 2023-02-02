@@ -6,6 +6,7 @@ import DirectoryTree from "../DirectoryTree";
 import { selectServerData } from "../../store/slice/dataSlice";
 import { selectCurrentDir } from "../../store/slice/currentInfoSlice";
 import AddItemModal from "../modals/AddItemModal";
+import DeleteItemModal from "../modals/DeleteItemModal";
 interface DirectoryListProps {}
 const DirectoryList = () => {
   // redux state
@@ -31,9 +32,11 @@ const DirectoryList = () => {
         <DirectoryTree children={currentData.directories} />
       </TreeItemBox>
       <AddDirectoryPortal>
-        <AddItemModal type="DIRECTORY" setIsMountAddItem={setIsMountAddDirectory} />
+        <AddItemModal type="DIRECTORY" setIsMount={setIsMountAddDirectory} />
       </AddDirectoryPortal>
-      {/* <DeleteFolderPortal></DeleteFolderPortal> */}
+      <DeleteDirectoryPortal>
+        <DeleteItemModal type="DIRECTORY" setIsMount={setIsMountDeleteDirectory} />
+      </DeleteDirectoryPortal>
     </Col>
   );
 };

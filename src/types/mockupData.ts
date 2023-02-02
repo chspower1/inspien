@@ -19,6 +19,6 @@ export interface File {
   file_size: number;
   modified_date: number;
 }
-export type Children = (File | Directory)[];
-
+export type Children = Item[];
+export type Item = File | Directory;
 export type ItemType = "FILE" | "DIRECTORY";

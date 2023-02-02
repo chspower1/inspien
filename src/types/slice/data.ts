@@ -1,4 +1,4 @@
-import { Directory, File, ItemType } from "../mockupData";
+import { Directory, File, Item, ItemType } from "../mockupData";
 import { CurrentDir } from "./currentInfo";
 
 export interface Response {
@@ -6,7 +6,7 @@ export interface Response {
   currentDir: CurrentDir;
 }
 export interface AddResponse extends Response {
-  newItem: File | Directory;
+  newItem: Item;
 }
 export interface DeleteResponse extends Response {
   targetName: string;

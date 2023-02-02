@@ -30,6 +30,7 @@ const dataSlice = createSlice({
         currentDir.name,
         currentDir.parent
       );
+      console.log("targetDirectory", targetDirectory?.children);
       const targetIndex = targetDirectory?.children.findIndex((item) => item.name === targetName);
       console.log(targetIndex);
       if (targetIndex !== undefined && targetIndex > -1) {

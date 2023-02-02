@@ -41,10 +41,10 @@ const FileList = () => {
           )
       )}
       <AddFilePortal>
-        <AddItemModal type="FILE" setIsMountAddItem={setIsMountAddFile} />
+        <AddItemModal type="FILE" setIsMount={setIsMountAddFile} />
       </AddFilePortal>
       <DeleteFilePortal>
-        <DeleteItemModal type="FILE" setIsMountDeleteFile={setIsMountDeleteFile} />
+        <DeleteItemModal type="FILE" setIsMount={setIsMountDeleteFile} />
       </DeleteFilePortal>
     </div>
   );
