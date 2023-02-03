@@ -48,7 +48,7 @@ const AddItemModal = ({ setIsMount, type }: AddItemModalProps) => {
             name: form.name,
             type,
             children: [],
-            parent: currentDir.parent,
+            parent: currentDir.parent + "/" + currentDir.name,
           };
     dispatch(addItem({ serverId, newItem, currentDir }));
     dispatch(

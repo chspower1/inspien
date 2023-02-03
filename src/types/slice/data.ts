@@ -1,4 +1,4 @@
-import { Directory, File, Item, ItemType } from "../mockupData";
+import { Item } from "../mockupData";
 import { CurrentDir } from "./currentInfo";
 
 export interface Response {
