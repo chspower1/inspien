@@ -40,10 +40,15 @@ export const OpenOrCloseButton = styled.button`
   left: -26px;
   width: 26px;
   height: 26px;
-  background-color: ${({ theme }) => theme.blue};
   color: white;
   margin-right: 10px;
+  path {
+    transition: all 0.3s ease;
+    fill: ${({ theme }) => theme.weekText};
+  }
   &:hover {
-    background-color: ${({ theme }) => theme.blue};
+    path {
+      fill: ${({ theme }) => theme.text};
+    }
   }
 `;
