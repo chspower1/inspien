@@ -4,8 +4,16 @@ interface DropBoxProps {
   x: number;
   y: number;
   setIsMount: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsMountAddFile: (value: React.SetStateAction<boolean>) => void;
+  handleClickDeleteOrUpdateButton: (mode: "DELETE" | "UPDATE") => void;
 }
-const DropBox = ({ x, y, setIsMount }: DropBoxProps) => {
+const DropBox = ({
+  x,
+  y,
+  setIsMount,
+  setIsMountAddFile,
+  handleClickDeleteOrUpdateButton,
+}: DropBoxProps) => {
   return (
     <Wrapper
       x={x}
@@ -14,10 +22,10 @@ const DropBox = ({ x, y, setIsMount }: DropBoxProps) => {
         e.stopPropagation();
       }}
     >
-      <Menu>
+      <Menu onClick={() => setIsMountAddFile(true)}>
         <PlusIcon>+</PlusIcon>파일 생성
       </Menu>
-      <Menu>
+      <Menu onClick={() => handleClickDeleteOrUpdateButton("UPDATE")}>
         <svg
           width="20"
           height="13"
@@ -32,7 +40,7 @@ const DropBox = ({ x, y, setIsMount }: DropBoxProps) => {
         </svg>
         파일 수정
       </Menu>
-      <Menu>
+      <Menu onClick={() => handleClickDeleteOrUpdateButton("DELETE")}>
         <svg
           width="20"
           height="16"
@@ -62,6 +70,7 @@ const Wrapper = styled(Col)<{ x: number; y: number }>`
   background-color: ${({ theme }) => theme.gray};
   left: ${({ x }) => x + "px"};
   top: ${({ y }) => y + "px"};
+  padding: 5px;
 `;
 const PlusIcon = styled(Row)`
   width: 16px;

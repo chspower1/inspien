@@ -13,6 +13,7 @@ import {
 } from "../../store/slice/currentInfoSlice";
 import DropBox from "../drop-box/DropBox";
 import Item from "../Item";
+import ItemTitle from "../ItemTitle";
 import AddItemModal from "../modals/AddItemModal";
 import DeleteItemModal from "../modals/DeleteItemModal";
 import UpdateItemModal from "../modals/UpdateItemModal";
@@ -60,23 +61,30 @@ const FileList = () => {
         setIsShowDropBox(false);
       }}
     >
-      <Button onClick={() => setIsMountAddFile(true)}>추가</Button>
-      <Button onClick={() => handleClickDeleteOrUpdateButton("UPDATE")}>수정</Button>
-      <Button isDelete onClick={() => handleClickDeleteOrUpdateButton("DELETE")}>
-        삭제
-      </Button>
+      <ItemTitle />
       {currentDir.children?.map(
         (item) =>
           item.type === "FILE" && (
             <div
               key={currentDir.parent + currentDir.name + item.name}
               onClick={() => dispatch(setCurrentFile({ name: item.name, parent: currentDir.name }))}
+              onContextMenu={() =>
+                dispatch(setCurrentFile({ name: item.name, parent: currentDir.name }))
+              }
             >
               <Item isActive={currentFile.name === item.name} item={item} />
             </div>
           )
       )}
-      {isShowDropBox && <DropBox x={dropBox.x} y={dropBox.y} setIsMount={setIsShowDropBox} />}
+      {isShowDropBox && (
+        <DropBox
+          x={dropBox.x}
+          y={dropBox.y}
+          setIsMount={setIsShowDropBox}
+          setIsMountAddFile={setIsMountAddFile}
+          handleClickDeleteOrUpdateButton={handleClickDeleteOrUpdateButton}
+        />
+      )}
       <AddFilePortal>
         <AddItemModal type="FILE" setIsMount={setIsMountAddFile} />
       </AddFilePortal>
