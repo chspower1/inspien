@@ -21,10 +21,10 @@ export const Overlay = styled.div`
 export const ConfirmButton = styled.button`
   width: 100px;
   height: 60px;
-  background-color: ${({ theme }) => theme.main};
+  background-color: ${({ theme }) => theme.blue};
   color: white;
 `;
 
 export const ClosingButton = styled(ConfirmButton)`
-  background-color: ${({ theme }) => theme.danger};
+  background-color: ${({ theme }) => theme.red};
 `;

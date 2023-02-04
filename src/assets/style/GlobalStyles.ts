@@ -32,5 +32,9 @@ export const GlobalStyled = createGlobalStyle`
             fill: #f2f3f4;
         }
     }
+    a{
+        text-decoration: none;
+        text-underline-offset:unset ;
+    }
 
 `;

@@ -2,9 +2,11 @@ import "styled-components";
 
 declare module "styled-components" {
   export interface DefaultTheme {
-    main: "#4472C4";
-    danger: "#B73E47";
-    active: "#436fb9";
-    mainHover: "#416db9";
+    gray: "#EEEEEE";
+    red: "#BC5151";
+    blue: "#4674CC";
+    yellow: "#E0AB5C";
+    text: "#414141";
+    weekText: "#909090";
   }
 }

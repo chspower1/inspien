@@ -49,12 +49,12 @@ const ServerBox = styled(Row)`
 const Server = styled(Row)`
   width: 200px;
   height: 200px;
-  background-color: ${({ theme }) => theme.main};
+  background-color: ${({ theme }) => theme.blue};
   color: white;
   border-radius: 10px;
   transition: all 0.3s ease;
   &:hover {
-    background-color: ${({ theme }) => theme.mainHover};
+    background-color: ${({ theme }) => theme.blue};
     width: 210px;
     height: 210px;
   }

@@ -5,35 +5,26 @@ import { Row } from "../assets/style/common";
 import { Directory, File } from "../types/mockupData";
 
 interface ItemProps {
-  isTitle?: boolean;
-  item?: Directory | File;
+  item: File;
   isActive?: boolean;
 }
 
-const Item = ({ item, isTitle, isActive = false }: ItemProps) => {
-  return isTitle ? (
-    <ItemWrapper isTitle>
-      <Name>이름</Name>
-      <FileSize>파일크기</FileSize>
-      <Time>수정시간</Time>
-    </ItemWrapper>
-  ) : item?.type === "FILE" ? (
+const Item = ({ item, isActive = false }: ItemProps) => {
+  return (
     <ItemWrapper className={isActive ? "active" : "normal"}>
       <Name>{item?.name}</Name>
-      <FileSize>{item?.type === "FILE" && item?.file_size}</FileSize>
-      <Time>
-        {item?.type === "FILE" && dayjs(item?.modified_date).format("YYYY-MM-DD HH:mm:ss")}
-      </Time>
+      <FileSize>{item?.file_size}</FileSize>
+      <Time>{dayjs(item?.modified_date).format("YYYY-MM-DD HH:mm:ss")}</Time>
     </ItemWrapper>
-  ) : null;
+  );
 };
 export default Item;
-const ItemWrapper = styled(Row)<{ isTitle?: boolean }>`
+const ItemWrapper = styled(Row)`
   width: 1000px;
   height: 80px;
   cursor: pointer;
-  background-color: ${({ theme, isTitle }) => (isTitle ? theme.main : "#DAE3F3")};
-  color: ${({ isTitle }) => (isTitle ? "white" : "black")};
+  background-color: white;
+  color: ${({ theme }) => theme.text};
   &:hover {
     background-color: #9eb2db;
   }

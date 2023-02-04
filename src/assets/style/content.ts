@@ -5,7 +5,7 @@ export const BackButton = styled.button`
   width: 100px;
   height: 100px;
   border-radius: 50px;
-  background-color: ${({ theme }) => theme.main};
+  background-color: ${({ theme }) => theme.blue};
 `;
 export const ButtonBox = styled(Row)`
   gap: 10px;
@@ -14,7 +14,7 @@ export const Button = styled.button<{ isDelete?: boolean }>`
   width: 100px;
   height: 60px;
   border-radius: 6px;
-  background-color: ${({ theme, isDelete }) => (isDelete ? theme.danger : theme.main)};
+  background-color: ${({ theme, isDelete }) => (isDelete ? theme.red : theme.blue)};
   color: white;
 `;
 export const TreeItemBox = styled.div`
@@ -40,10 +40,10 @@ export const OpenOrCloseButton = styled.button`
   left: -26px;
   width: 26px;
   height: 26px;
-  background-color: ${({ theme }) => theme.main};
+  background-color: ${({ theme }) => theme.blue};
   color: white;
   margin-right: 10px;
   &:hover {
-    background-color: ${({ theme }) => theme.mainHover};
+    background-color: ${({ theme }) => theme.blue};
   }
 `;

@@ -1,6 +1,6 @@
 import { Col } from "../../assets/style/common";
 import { Button, ButtonBox, TreeItemBox } from "../../assets/style/content";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { useAppSelector } from "../../store/hooks";
 import usePortal from "../../hooks/usePortal";
 import DirectoryTree from "../DirectoryTree";
 import { selectServerData } from "../../store/slice/dataSlice";
@@ -8,12 +8,11 @@ import { selectCurrentDir } from "../../store/slice/currentInfoSlice";
 import AddItemModal from "../modals/AddItemModal";
 import DeleteItemModal from "../modals/DeleteItemModal";
 import UpdateItemModal from "../modals/UpdateItemModal";
-interface DirectoryListProps {}
+import styled from "styled-components";
 const DirectoryList = () => {
   // redux state
   const currentData = useAppSelector(selectServerData);
   const currentDir = useAppSelector(selectCurrentDir);
-  const dispatch = useAppDispatch();
 
   // modal
   const { Portal: AddDirectoryPortal, setIsMount: setIsMountAddDirectory } = usePortal();
@@ -63,3 +62,5 @@ const DirectoryList = () => {
   );
 };
 export default DirectoryList;
+
+const Wrapper = styled(Col)``;

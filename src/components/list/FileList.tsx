@@ -1,3 +1,6 @@
+import { useState, useEffect } from "react";
+import styled from "styled-components";
+import { Col } from "../../assets/style/common";
 import { Button } from "../../assets/style/content";
 import usePortal from "../../hooks/usePortal";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
@@ -15,10 +18,18 @@ import UpdateItemModal from "../modals/UpdateItemModal";
 
 interface FileListProps {}
 const FileList = () => {
+  // state
+  const [isShowDropBox, setIsShowDropBox] = useState(false);
+  const [dropBox, setDropBox] = useState({
+    x: 0,
+    y: 0,
+  });
+  // redux
   const currentDir = useAppSelector((state) => selectCurrentDir(state));
   const currentFile = useAppSelector((state) => selectCurrentFile(state));
-  console.log("FileList", currentDir);
   const dispatch = useAppDispatch();
+
+  // modal
   const { Portal: AddFilePortal, setIsMount: setIsMountAddFile } = usePortal();
   const { Portal: DeleteFilePortal, setIsMount: setIsMountDeleteFile } = usePortal();
   const { Portal: UpdateFilePortal, setIsMount: setIsMountUpdateFile } = usePortal();
@@ -29,14 +40,31 @@ const FileList = () => {
     setIsMountDeleteFile(mode === "DELETE");
     setIsMountUpdateFile(mode === "UPDATE");
   };
+  const handleContextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const x = e.clientX;
+    const y = e.clientY;
+    setDropBox({
+      x: x,
+      y: y,
+    });
+    setIsShowDropBox(true);
+    console.log(x, y);
+  };
+  // const handleClickWrapper = (e) => {};
+  useEffect(() => {}, [dropBox]);
   return (
-    <div>
+    <Wrapper
+      onContextMenu={handleContextMenu}
+      onClick={() => {
+        setIsShowDropBox(false);
+      }}
+    >
       <Button onClick={() => setIsMountAddFile(true)}>추가</Button>
       <Button onClick={() => handleClickDeleteOrUpdateButton("UPDATE")}>수정</Button>
       <Button isDelete onClick={() => handleClickDeleteOrUpdateButton("DELETE")}>
         삭제
       </Button>
-      <Item isTitle />
       {currentDir.children?.map(
         (item) =>
           item.type === "FILE" && (
@@ -48,6 +76,19 @@ const FileList = () => {
             </div>
           )
       )}
+      {isShowDropBox && (
+        <DropBox
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+          x={dropBox.x}
+          y={dropBox.y}
+        >
+          <div>파일 만들기</div>
+          <div>속성 </div>
+          <button onClick={() => setIsShowDropBox(false)}>취소</button>
+        </DropBox>
+      )}
       <AddFilePortal>
         <AddItemModal type="FILE" setIsMount={setIsMountAddFile} />
       </AddFilePortal>
@@ -57,7 +98,21 @@ const FileList = () => {
       <UpdateFilePortal>
         <UpdateItemModal type="FILE" setIsMount={setIsMountUpdateFile} />
       </UpdateFilePortal>
-    </div>
+    </Wrapper>
   );
 };
 export default FileList;
+
+const Wrapper = styled(Col)`
+  width: 1000px;
+  height: 1000px;
+  justify-content: flex-start;
+`;
+const DropBox = styled.div<{ x: number; y: number }>`
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background-color: gray;
+  left: ${({ x }) => x + "px"};
+  top: ${({ y }) => y + "px"};
+`;
