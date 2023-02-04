@@ -4,6 +4,26 @@ import { ReactComponent as DeleteIcon } from "../assets/img/delete.svg";
 import { ReactComponent as UpdateIcon } from "../assets/img/update.svg";
 import { ReactComponent as AddIcon } from "../assets/img/add.svg";
 import { ItemType } from "../types/mockupData";
+import { Variants } from "framer-motion";
+const CONTEXT_MENU_VARIANTS: Variants = {
+  initial: {
+    opacity: 0,
+  },
+  animate: {
+    opacity: 1,
+    transition: {
+      type: "spring",
+      duration: 0.6,
+    },
+  },
+  exit: {
+    opacity: 0,
+    transition: {
+      type: "spring",
+      duration: 0.6,
+    },
+  },
+};
 interface ContextMenuProps {
   type: ItemType;
   x: number;
@@ -31,6 +51,10 @@ const ContextMenu = ({
       onClick={(e) => {
         e.stopPropagation();
       }}
+      variants={CONTEXT_MENU_VARIANTS}
+      initial="initial"
+      animate="animate"
+      exit="exit"
     >
       <Menu onClick={hadleClickAddButton}>
         <Icon>

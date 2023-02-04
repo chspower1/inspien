@@ -1,6 +1,6 @@
 import styled from "styled-components";
-
-export const Row = styled.div`
+import { motion } from "framer-motion";
+export const Row = styled(motion.div)`
   display: flex;
   justify-content: center;
   align-items: center;

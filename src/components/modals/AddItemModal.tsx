@@ -5,6 +5,8 @@ import {
   ClosingButton,
   ModalTitle,
   ButtonBox,
+  Overlay,
+  ModalContainer,
 } from "../../assets/style/modal";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import Input from "../Input";
@@ -15,15 +17,16 @@ import {
 } from "../../store/slice/currentInfoSlice";
 import { addItem } from "../../store/slice/dataSlice";
 import { Item, ItemType } from "../../types/mockupData";
+import { AnimatePresence } from "framer-motion";
+import { ModalProps } from "../../types/modal";
+import ReactDOM from "react-dom";
 interface AddItemForm {
   name: string;
   size?: number;
 }
-interface AddItemModalProps {
-  setIsMount: React.Dispatch<React.SetStateAction<boolean>>;
-  type: ItemType;
-}
-const AddItemModal = ({ setIsMount, type }: AddItemModalProps) => {
+
+const AddItemModal = ({ isMount, setIsMount, type }: ModalProps) => {
+
   // redux state
   const serverId = useAppSelector(selectCurrentServerId);
   const currentDir = useAppSelector(selectCurrentDir);
@@ -65,49 +68,58 @@ const AddItemModal = ({ setIsMount, type }: AddItemModalProps) => {
     );
     setIsMount(false);
   };
-  return (
-    <ModalWrapper>
-      <ModalTitle>{type === "FILE" ? "파일" : "폴더"} 추가</ModalTitle>
-      <form onSubmit={handleSubmit(onValid)}>
-        {type === "FILE" ? (
-          <>
-            <Input
-              label="파일 이름"
-              name="name"
-              register={register("name", {
-                required: "파일 이름을 입력해주세요!",
-              })}
-              errorMessage={errors.name?.message || null}
-            />
-            <Input
-              label="파일 크기"
-              name="size"
-              type="number"
-              register={register("size", {
-                required: "파일 사이즈를 입력해주세요!",
-              })}
-              errorMessage={errors.size?.message || null}
-            />
-          </>
-        ) : (
-          <Input
-            label="폴더 이름"
-            name="name"
-            register={register("name", {
-              required: "폴더 이름을 입력해주세요!",
-            })}
-            errorMessage={errors.name?.message || null}
-          />
-        )}
-        <ButtonBox>
-          <ConfirmButton>추가</ConfirmButton>
-          <ClosingButton type="button" onClick={() => setIsMount(false)}>
-            취소
-          </ClosingButton>
-        </ButtonBox>
-      </form>
-    </ModalWrapper>
+  const ModalContent = (
+    <AnimatePresence>
+      {isMount && (
+        <ModalWrapper>
+          <Overlay onClick={() => setIsMount(false)} />
+          <ModalContainer>
+            <ModalTitle>{type === "FILE" ? "파일" : "폴더"} 추가</ModalTitle>
+            <form onSubmit={handleSubmit(onValid)}>
+              {type === "FILE" ? (
+                <>
+                  <Input
+                    label="파일 이름"
+                    name="name"
+                    register={register("name", {
+                      required: "파일 이름을 입력해주세요!",
+                    })}
+                    errorMessage={errors.name?.message || null}
+                  />
+                  <Input
+                    label="파일 크기"
+                    name="size"
+                    type="number"
+                    register={register("size", {
+                      required: "파일 사이즈를 입력해주세요!",
+                    })}
+                    errorMessage={errors.size?.message || null}
+                  />
+                </>
+              ) : (
+                <Input
+                  label="폴더 이름"
+                  name="name"
+                  register={register("name", {
+                    required: "폴더 이름을 입력해주세요!",
+                  })}
+                  errorMessage={errors.name?.message || null}
+                />
+              )}
+              <ButtonBox>
+                <ConfirmButton>추가</ConfirmButton>
+                <ClosingButton type="button" onClick={() => setIsMount(false)}>
+                  취소
+                </ClosingButton>
+              </ButtonBox>
+            </form>
+          </ModalContainer>
+        </ModalWrapper>
+      )}
+    </AnimatePresence>
   );
+
+  return ReactDOM.createPortal(ModalContent, document.getElementById("modal-root") as HTMLElement);
 };
 
 export default AddItemModal;

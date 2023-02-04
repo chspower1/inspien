@@ -1,11 +1,14 @@
+import { AnimatePresence } from "framer-motion";
 import { Row } from "../../assets/style/common";
 import {
   Accent,
   ButtonBox,
   ClosingButton,
   ConfirmButton,
+  ModalContainer,
   ModalTitle,
   ModalWrapper,
+  Overlay,
 } from "../../assets/style/modal";
 
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
@@ -17,11 +20,10 @@ import {
 } from "../../store/slice/currentInfoSlice";
 import { removeDirectory, removeFile } from "../../store/slice/dataSlice";
 import { ItemType } from "../../types/mockupData";
-interface DeleteItemModalProps {
-  setIsMount: React.Dispatch<React.SetStateAction<boolean>>;
-  type: ItemType;
-}
-const DeleteItemModal = ({ setIsMount, type }: DeleteItemModalProps) => {
+import { ModalProps } from "../../types/modal";
+import ReactDOM from "react-dom";
+
+const DeleteItemModal = ({ isMount, setIsMount, type }: ModalProps) => {
   // redux
   const serverId = useAppSelector(selectCurrentServerId);
   const currentDir = useAppSelector(selectCurrentDir);
@@ -66,19 +68,27 @@ const DeleteItemModal = ({ setIsMount, type }: DeleteItemModalProps) => {
 
     setIsMount(false);
   };
-  
-  return (
-    <ModalWrapper height="300px">
-      <ModalTitle>{type === "DIRECTORY" ? "폴더" : "파일"} 삭제</ModalTitle>
-      <Row>
-        정말 <Accent>{type === "DIRECTORY" ? currentDir.name : currentFile.name}</Accent> 를
-        삭제하시겠습니까?
-      </Row>
-      <ButtonBox>
-        <ConfirmButton onClick={handleClickDeleteButton}>삭제</ConfirmButton>
-        <ClosingButton onClick={() => setIsMount(false)}>취소</ClosingButton>
-      </ButtonBox>
-    </ModalWrapper>
+
+  const ModalContent = (
+    <AnimatePresence>
+      {isMount && (
+        <ModalWrapper>
+          <Overlay onClick={() => setIsMount(false)} />
+          <ModalContainer height="300px">
+            <ModalTitle>{type === "DIRECTORY" ? "폴더" : "파일"} 삭제</ModalTitle>
+            <Row>
+              정말 <Accent>{type === "DIRECTORY" ? currentDir.name : currentFile.name}</Accent> 를
+              삭제하시겠습니까?
+            </Row>
+            <ButtonBox>
+              <ConfirmButton onClick={handleClickDeleteButton}>삭제</ConfirmButton>
+              <ClosingButton onClick={() => setIsMount(false)}>취소</ClosingButton>
+            </ButtonBox>
+          </ModalContainer>
+        </ModalWrapper>
+      )}
+    </AnimatePresence>
   );
+  return ReactDOM.createPortal(ModalContent, document.getElementById("modal-root") as HTMLElement);
 };
 export default DeleteItemModal;

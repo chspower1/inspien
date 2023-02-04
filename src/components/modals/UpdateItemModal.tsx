@@ -5,6 +5,8 @@ import {
   ClosingButton,
   ModalTitle,
   ButtonBox,
+  Overlay,
+  ModalContainer,
 } from "../../assets/style/modal";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import Input from "../Input";
@@ -17,15 +19,15 @@ import {
 import type { ItemType } from "../../types/mockupData";
 import { selectServerData, updateDirectory, updateItem } from "../../store/slice/dataSlice";
 import { changeTargetToParent } from "../../utils/changeTargetToParent";
+import { ModalProps } from "../../types/modal";
+import { AnimatePresence } from "framer-motion";
+import ReactDOM from "react-dom";
 interface UpdateItemForm {
   name: string;
   size?: number;
 }
-interface UpdateItemModalProps {
-  setIsMount: React.Dispatch<React.SetStateAction<boolean>>;
-  type: ItemType;
-}
-const UpdateItemModal = ({ setIsMount, type }: UpdateItemModalProps) => {
+const UpdateItemModal = ({ isMount, setIsMount, type }: ModalProps) => {
+
   const targetType = type === "DIRECTORY" ? "폴더" : "파일";
   // redux state
   const serverId = useAppSelector(selectCurrentServerId);
@@ -83,31 +85,41 @@ const UpdateItemModal = ({ setIsMount, type }: UpdateItemModalProps) => {
     }
     setIsMount(false);
   };
-  return (
-    <ModalWrapper>
-      <ModalTitle>{targetType} 수정</ModalTitle>
-      <form onSubmit={handleSubmit(onValid)}>
-        <div style={{ marginBottom: "20px" }}>
-          현재 {targetType} 이름 : {type === "FILE" ? currentFile.name : currentDir.name}
-        </div>
 
-        <Input
-          label="수정할 이름"
-          name="name"
-          register={register("name", {
-            required: type === "FILE" ? "파일 이름을 입력해주세요!" : "폴더 이름을 입력해주세요!",
-          })}
-          errorMessage={errors.name?.message || null}
-        />
-        <ButtonBox>
-          <ConfirmButton>수정완료</ConfirmButton>
-          <ClosingButton type="button" onClick={() => setIsMount(false)}>
-            취소
-          </ClosingButton>
-        </ButtonBox>
-      </form>
-    </ModalWrapper>
+  const ModalContent = (
+    <AnimatePresence>
+      {isMount && (
+        <ModalWrapper>
+          <Overlay onClick={() => setIsMount(false)} />
+          <ModalContainer>
+            <ModalTitle>{targetType} 수정</ModalTitle>
+            <form onSubmit={handleSubmit(onValid)}>
+              <div style={{ marginBottom: "20px" }}>
+                현재 {targetType} 이름 : {type === "FILE" ? currentFile.name : currentDir.name}
+              </div>
+
+              <Input
+                label="수정할 이름"
+                name="name"
+                register={register("name", {
+                  required:
+                    type === "FILE" ? "파일 이름을 입력해주세요!" : "폴더 이름을 입력해주세요!",
+                })}
+                errorMessage={errors.name?.message || null}
+              />
+              <ButtonBox>
+                <ConfirmButton>수정완료</ConfirmButton>
+                <ClosingButton type="button" onClick={() => setIsMount(false)}>
+                  취소
+                </ClosingButton>
+              </ButtonBox>
+            </form>
+          </ModalContainer>
+        </ModalWrapper>
+      )}
+    </AnimatePresence>
   );
+  return ReactDOM.createPortal(ModalContent, document.getElementById("modal-root") as HTMLElement);
 };
 
 export default UpdateItemModal;

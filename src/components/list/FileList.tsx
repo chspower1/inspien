@@ -1,7 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { Col } from "../../assets/style/common";
-import usePortal from "../../hooks/usePortal";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
   selectCurrentDir,
@@ -16,6 +15,7 @@ import ItemTitle from "../ItemTitle";
 import AddItemModal from "../modals/AddItemModal";
 import DeleteItemModal from "../modals/DeleteItemModal";
 import UpdateItemModal from "../modals/UpdateItemModal";
+import { AnimatePresence } from "framer-motion";
 
 const FileList = () => {
   // state
@@ -30,10 +30,9 @@ const FileList = () => {
   const dispatch = useAppDispatch();
 
   // modal
-  const { Portal: AddFilePortal, setIsMount: setIsMountAddFile } = usePortal();
-  const { Portal: DeleteFilePortal, setIsMount: setIsMountDeleteFile } = usePortal();
-  const { Portal: UpdateFilePortal, setIsMount: setIsMountUpdateFile } = usePortal();
-
+  const [isMountAddFile, setIsMountAddFile] = useState(false);
+  const [isMountDeleteFile, setIsMountDeleteFile] = useState(false);
+  const [isMountUpdateFile, setIsMountUpdateFile] = useState(false);
   // handle
   const handleClickDeleteOrUpdateButton = (mode: "DELETE" | "UPDATE") => {
     dispatch(setIsShowContextMenu("NONE"));
@@ -90,29 +89,25 @@ const FileList = () => {
             </div>
           )
       )}
-      {isShowContextMenu && (
-        <ContextMenu
-          type="FILE"
-          x={contextMenu.x}
-          y={contextMenu.y}
-          handleClickDeleteButton={() => {
-            handleClickDeleteOrUpdateButton("DELETE");
-          }}
-          handleClickUpdateButton={() => {
-            handleClickDeleteOrUpdateButton("UPDATE");
-          }}
-          hadleClickAddButton={handleClickAddButton}
-        />
-      )}
-      <AddFilePortal>
-        <AddItemModal type="FILE" setIsMount={setIsMountAddFile} />
-      </AddFilePortal>
-      <DeleteFilePortal>
-        <DeleteItemModal type="FILE" setIsMount={setIsMountDeleteFile} />
-      </DeleteFilePortal>
-      <UpdateFilePortal>
-        <UpdateItemModal type="FILE" setIsMount={setIsMountUpdateFile} />
-      </UpdateFilePortal>
+      <AnimatePresence>
+        {isShowContextMenu && (
+          <ContextMenu
+            type="FILE"
+            x={contextMenu.x}
+            y={contextMenu.y}
+            handleClickDeleteButton={() => {
+              handleClickDeleteOrUpdateButton("DELETE");
+            }}
+            handleClickUpdateButton={() => {
+              handleClickDeleteOrUpdateButton("UPDATE");
+            }}
+            hadleClickAddButton={handleClickAddButton}
+          />
+        )}
+      </AnimatePresence>
+      <AddItemModal type="FILE" isMount={isMountAddFile} setIsMount={setIsMountAddFile} />
+      <DeleteItemModal type="FILE" isMount={isMountDeleteFile} setIsMount={setIsMountDeleteFile} />
+      <UpdateItemModal type="FILE" isMount={isMountUpdateFile} setIsMount={setIsMountUpdateFile} />
     </Wrapper>
   );
 };

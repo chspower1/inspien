@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Col } from "../../assets/style/common";
 import { TreeContainer } from "../../assets/style/content";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import usePortal from "../../hooks/usePortal";
 import DirectoryTree from "../DirectoryTree";
 import { selectServerData } from "../../store/slice/dataSlice";
 import { selectCurrentDir } from "../../store/slice/currentInfoSlice";
@@ -16,7 +15,7 @@ import {
   selectDirectoryContextMenu,
   setIsShowContextMenu,
 } from "../../store/slice/contextMenuSlice";
-
+import { AnimatePresence } from "framer-motion";
 const DirectoryList = () => {
   // state
   const [contextMenu, setContextMenu] = useState({
@@ -30,10 +29,10 @@ const DirectoryList = () => {
   const dispatch = useAppDispatch();
 
   // modal
-  const { Portal: AddDirectoryPortal, setIsMount: setIsMountAddDirectory } = usePortal();
-  const { Portal: UpdateDirectoryPortal, setIsMount: setIsMountUpdateDirectory } = usePortal();
-  const { Portal: DeleteDirectoryPortal, setIsMount: setIsMountDeleteDirectory } = usePortal();
 
+  const [isMountAddDirectory, setIsMountAddDirectory] = useState(false);
+  const [isMountUpdateDirectory, setIsMountUpdateDirectory] = useState(false);
+  const [isMountDeleteDirectory, setIsMountDeleteDirectory] = useState(false);
   // handler
   const handleClickDeleteButton = () => {
     dispatch(setIsShowContextMenu("NONE"));
@@ -83,26 +82,31 @@ const DirectoryList = () => {
       <TreeContainer>
         <DirectoryTree children={currentData.directories} />
       </TreeContainer>
+      <AnimatePresence>
+        {isShowContextMenu && (
+          <ContextMenu
+            type="DIRECTORY"
+            x={contextMenu.x}
+            y={contextMenu.y}
+            hadleClickAddButton={hadleClickAddButton}
+            handleClickUpdateButton={handleClickUpdateButton}
+            handleClickDeleteButton={handleClickDeleteButton}
+          />
+        )}
+      </AnimatePresence>
+      <AddItemModal type="FILE" isMount={isMountAddDirectory} setIsMount={setIsMountAddDirectory} />
 
-      {isShowContextMenu && (
-        <ContextMenu
-          type="DIRECTORY"
-          x={contextMenu.x}
-          y={contextMenu.y}
-          hadleClickAddButton={hadleClickAddButton}
-          handleClickUpdateButton={handleClickUpdateButton}
-          handleClickDeleteButton={handleClickDeleteButton}
-        />
-      )}
-      <AddDirectoryPortal>
-        <AddItemModal type="DIRECTORY" setIsMount={setIsMountAddDirectory} />
-      </AddDirectoryPortal>
-      <DeleteDirectoryPortal>
-        <DeleteItemModal type="DIRECTORY" setIsMount={setIsMountDeleteDirectory} />
-      </DeleteDirectoryPortal>
-      <UpdateDirectoryPortal>
-        <UpdateItemModal type="DIRECTORY" setIsMount={setIsMountUpdateDirectory} />
-      </UpdateDirectoryPortal>
+      <DeleteItemModal
+        type="FILE"
+        isMount={isMountDeleteDirectory}
+        setIsMount={setIsMountDeleteDirectory}
+      />
+
+      <UpdateItemModal
+        type="FILE"
+        isMount={isMountUpdateDirectory}
+        setIsMount={setIsMountUpdateDirectory}
+      />
     </Wrapper>
   );
 };
