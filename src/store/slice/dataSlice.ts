@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Response, AddResponse, DeleteResponse, UpdateResponse } from "../../types/slice/data";
+import { changeTargetToParent } from "../../utils/changeTargetToParent";
 import { searchInChildren } from "../../utils/searchInChildren";
 import { sliceRoute } from "../../utils/sliceRoute";
 import { RootState } from "../configureStore";
@@ -14,23 +15,36 @@ const dataSlice = createSlice({
   initialState,
   reducers: {
     addItem: (state, action: PayloadAction<AddResponse>) => {
-      const { currentDir, newItem, serverId } = action.payload;
+      // payload
+      const {
+        currentDir: { name, parent },
+        newItem,
+        serverId,
+      } = action.payload;
 
-      const targetDirectory = searchInChildren(
-        state.value.directories[serverId - 1].directories,
-        currentDir.name,
-        currentDir.parent
-      );
+      // serverData
+      const serverData = state.value.directories[serverId - 1].directories;
+
+      // Add Item
+      const targetDirectory = searchInChildren(serverData, name, parent);
       targetDirectory?.children.push(newItem);
     },
     removeFile: (state, action: PayloadAction<DeleteResponse>) => {
-      const { currentDir, targetName, serverId } = action.payload;
-      const targetDirectory = searchInChildren(
-        state.value.directories[serverId - 1].directories,
-        currentDir.name,
-        currentDir.parent
-      );
+      // payload
+      const {
+        currentDir: { name, parent },
+        targetName,
+        serverId,
+      } = action.payload;
+
+      // serverData
+      const serverData = state.value.directories[serverId - 1].directories;
+
+      // target 디렉토리 추적
+      const targetDirectory = searchInChildren(serverData, name, parent);
       const targetIndex = targetDirectory?.children.findIndex((item) => item.name === targetName);
+
+      // Delete File
       if (targetIndex !== undefined && targetIndex > -1) {
         targetDirectory?.children.splice(targetIndex, 1);
       }
@@ -38,22 +52,11 @@ const dataSlice = createSlice({
     removeDirectory: (state, action: PayloadAction<Response>) => {
       const { currentDir, serverId } = action.payload;
 
-      // 선택된 상위폴더로 타겟 변경
-      const newTarget = currentDir.parent?.split("/").pop();
-      const parentArr = currentDir.parent?.split("/").slice(1, -1);
-      let parent = "";
-      if (parentArr?.length === 0) {
-        parent = "/";
-      } else {
-        currentDir.parent
-          ?.split("/")
-          .slice(1, -1)
-          .forEach((i) => (parent = parent + "/" + i));
-      }
-      // depth가 2이하일 경우 전체 데이터로 조회
-      const targetDirectory = newTarget
-        ? searchInChildren(state.value.directories[serverId - 1].directories, newTarget!, parent)
-        : state.value.directories[serverId - 1].directories[0];
+      // 현재 디렉토리의 상위디렉토리로 타겟 변경
+      const targetDirectory = changeTargetToParent(
+        currentDir,
+        state.value.directories[serverId - 1]
+      );
 
       // 타겟 index 조회
       const targetIndex = targetDirectory?.children.findIndex(
@@ -79,24 +82,13 @@ const dataSlice = createSlice({
       });
     },
     updateDirectory: (state, action: PayloadAction<UpdateResponse>) => {
-      const { currentDir, targetName, newName, serverId } = action.payload;
+      const { currentDir, newName, serverId } = action.payload;
 
-      // 선택된 상위폴더로 타겟 변경
-      const newTarget = currentDir.parent?.split("/").pop();
-      const parentArr = currentDir.parent?.split("/").slice(1, -1);
-      let parent = "";
-      if (parentArr?.length === 0) {
-        parent = "/";
-      } else {
-        currentDir.parent
-          ?.split("/")
-          .slice(1, -1)
-          .forEach((i) => (parent = parent + "/" + i));
-      }
-      // depth가 2이하일 경우 전체 데이터로 조회
-      const targetDirectory = newTarget
-        ? searchInChildren(state.value.directories[serverId - 1].directories, newTarget!, parent)
-        : state.value.directories[serverId - 1].directories[0];
+      // 현재 디렉토리의 상위디렉토리로 타겟 변경
+      const targetDirectory = changeTargetToParent(
+        currentDir,
+        state.value.directories[serverId - 1]
+      );
 
       // 타겟 index 조회
       const targetIndex = targetDirectory?.children.findIndex(
