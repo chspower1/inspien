@@ -96,7 +96,6 @@ const dataSlice = createSlice({
 
       // index가 있을경우 수정
       if (targetDirectory !== undefined && targetIndex !== undefined && targetIndex > -1) {
-        console.log(targetDirectory?.children[targetIndex].name);
         targetDirectory.children[targetIndex].name = newName;
       }
     },

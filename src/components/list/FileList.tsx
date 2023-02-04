@@ -56,7 +56,6 @@ const FileList = () => {
       y: y,
     });
     dispatch(setIsShowContextMenu("FILE"));
-    console.log(x, y);
   };
 
   return (

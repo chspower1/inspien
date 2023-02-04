@@ -24,7 +24,6 @@ const Detail = () => {
 
   // update serverId
   useEffect(() => {
-    console.log("serverId", id);
     if (id) {
       dispatch(setCurrentServer({ id: parseInt(id) }));
     }
