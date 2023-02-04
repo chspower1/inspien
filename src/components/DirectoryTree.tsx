@@ -6,12 +6,17 @@ import { checkDirInChildren } from "../utils/checkDirInChildren";
 import DirectoryIcon from "../assets/img/directory_icon.png";
 import { ReactComponent as ArrowBottom } from "../assets/img/arrow_bottom.svg";
 import { ReactComponent as ArrowRight } from "../assets/img/arrow_right.svg";
-import { Children, Directory, File, Item } from "../types/mockupData";
+import { Children, Directory } from "../types/mockupData";
 import styled from "styled-components";
 const DirectoryTree = ({ children }: { children: Children }) => {
+  // state
+  const [isOpen, setIsOpen] = useState(true);
+
+  // redux
   const currentDir = useAppSelector((state) => selectCurrentDir(state));
   const dispatch = useAppDispatch();
-  const [isOpen, setIsOpen] = useState(true);
+
+  // handler
   const handleClickDirectory = (item: Directory) => {
     dispatch(
       setCurrentDir({

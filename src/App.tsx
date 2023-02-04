@@ -1,4 +1,3 @@
-import React from "react";
 import { Routes, BrowserRouter, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import Detail from "./pages/Detail";

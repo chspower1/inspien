@@ -15,7 +15,7 @@ import {
   setCurrentDir,
 } from "../../store/slice/currentInfoSlice";
 import { addItem } from "../../store/slice/dataSlice";
-import { Directory, File, Item, ItemType } from "../../types/mockupData";
+import { Item, ItemType } from "../../types/mockupData";
 interface AddItemForm {
   name: string;
   size?: number;
@@ -28,7 +28,6 @@ const AddItemModal = ({ setIsMount, type }: AddItemModalProps) => {
   // redux state
   const serverId = useAppSelector(selectCurrentServerId);
   const currentDir = useAppSelector(selectCurrentDir);
-  const currentFile = useAppSelector((state) => selectCurrentFile(state));
   const dispatch = useAppDispatch();
 
   // react-hook-form

@@ -1,8 +1,7 @@
-import { useState } from "react";
 import dayjs from "dayjs";
 import styled from "styled-components";
 import { Row } from "../assets/style/common";
-import { Directory, File } from "../types/mockupData";
+import { File } from "../types/mockupData";
 import { ReactComponent as FileIcon } from "../assets/img/file.svg";
 import "dayjs/locale/ko";
 interface ItemProps {

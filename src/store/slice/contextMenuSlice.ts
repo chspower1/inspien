@@ -1,24 +1,24 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ItemType } from "../../types/mockupData";
 import { RootState } from "../configureStore";
-interface DropBoxState {
+interface ContextMenuState {
   value: {
     file: boolean;
     directory: boolean;
   };
 }
-const initialState: DropBoxState = {
+const initialState: ContextMenuState = {
   value: {
     file: false,
     directory: false,
   },
 };
 
-const dropBoxSlice = createSlice({
-  name: "dropBoxSlice",
+const contextMenuSlice = createSlice({
+  name: "ContextMenuSlice",
   initialState,
   reducers: {
-    setIsShowDropBox: (state, action: PayloadAction<ItemType | "NONE">) => {
+    setIsShowContextMenu: (state, action: PayloadAction<ItemType | "NONE">) => {
       if (action.payload === "DIRECTORY") {
         state.value = {
           directory: true,
@@ -39,7 +39,7 @@ const dropBoxSlice = createSlice({
   },
 });
 
-export const { setIsShowDropBox } = dropBoxSlice.actions;
-export const selectFileDropBox = (state: RootState) => state.dropBox.value.file;
-export const selectDirectoryDropBox = (state: RootState) => state.dropBox.value.directory;
-export default dropBoxSlice.reducer;
+export const { setIsShowContextMenu } = contextMenuSlice.actions;
+export const selectFileContextMenu = (state: RootState) => state.contextMenu.value.file;
+export const selectDirectoryContextMenu = (state: RootState) => state.contextMenu.value.directory;
+export default contextMenuSlice.reducer;

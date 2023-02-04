@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Response, AddResponse, DeleteResponse, UpdateResponse } from "../../types/slice/data";
 import { changeTargetToParent } from "../../utils/changeTargetToParent";
 import { searchInChildren } from "../../utils/searchInChildren";
-import { sliceRoute } from "../../utils/sliceRoute";
 import { RootState } from "../configureStore";
 import { MockupState } from "../Mockup";
 

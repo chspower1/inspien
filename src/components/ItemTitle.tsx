@@ -1,9 +1,6 @@
-import { useState } from "react";
-import dayjs from "dayjs";
 import styled from "styled-components";
 import { Row } from "../assets/style/common";
-import { Directory, File } from "../types/mockupData";
-import { FileSize, ItemWrapper, Name, Time } from "./Item";
+import { FileSize, Name, Time } from "./Item";
 
 const ItemTitle = () => {
   return (

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { Col } from "../../assets/style/common";
 import usePortal from "../../hooks/usePortal";
@@ -8,9 +8,9 @@ import {
   selectCurrentFile,
   setCurrentFile,
 } from "../../store/slice/currentInfoSlice";
-import { selectFileDropBox, setIsShowDropBox } from "../../store/slice/dropBoxSlice";
+import { selectFileContextMenu, setIsShowContextMenu } from "../../store/slice/contextMenuSlice";
 import ControllButtonBox from "../ControllButtonBox";
-import DropBox from "../DropBox";
+import ContextMenu from "../ContextMenu";
 import Item from "../Item";
 import ItemTitle from "../ItemTitle";
 import AddItemModal from "../modals/AddItemModal";
@@ -19,14 +19,14 @@ import UpdateItemModal from "../modals/UpdateItemModal";
 
 const FileList = () => {
   // state
-  const [dropBox, setDropBox] = useState({
+  const [contextMenu, setContextMenu] = useState({
     x: 0,
     y: 0,
   });
   // redux
   const currentDir = useAppSelector(selectCurrentDir);
   const currentFile = useAppSelector(selectCurrentFile);
-  const isShowDropBox = useAppSelector(selectFileDropBox);
+  const isShowContextMenu = useAppSelector(selectFileContextMenu);
   const dispatch = useAppDispatch();
 
   // modal
@@ -36,7 +36,7 @@ const FileList = () => {
 
   // handle
   const handleClickDeleteOrUpdateButton = (mode: "DELETE" | "UPDATE") => {
-    dispatch(setIsShowDropBox("NONE"));
+    dispatch(setIsShowContextMenu("NONE"));
     // 파일을 선택하지 않았을 때 예외처리
     if (currentFile.name === undefined) return alert("파일을 선택해 주세요!");
     setIsMountDeleteFile(mode === "DELETE");
@@ -44,18 +44,18 @@ const FileList = () => {
   };
 
   const handleClickAddButton = () => {
-    dispatch(setIsShowDropBox("NONE"));
+    dispatch(setIsShowContextMenu("NONE"));
     setIsMountAddFile(true);
   };
   const handleContextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     const x = e.clientX;
     const y = e.clientY;
-    setDropBox({
+    setContextMenu({
       x: x,
       y: y,
     });
-    dispatch(setIsShowDropBox("FILE"));
+    dispatch(setIsShowContextMenu("FILE"));
     console.log(x, y);
   };
 
@@ -63,7 +63,7 @@ const FileList = () => {
     <Wrapper
       onContextMenu={handleContextMenu}
       onClick={() => {
-        dispatch(setIsShowDropBox("NONE"));
+        dispatch(setIsShowContextMenu("NONE"));
       }}
     >
       <ControllButtonBox
@@ -91,11 +91,11 @@ const FileList = () => {
             </div>
           )
       )}
-      {isShowDropBox && (
-        <DropBox
+      {isShowContextMenu && (
+        <ContextMenu
           type="FILE"
-          x={dropBox.x}
-          y={dropBox.y}
+          x={contextMenu.x}
+          y={contextMenu.y}
           handleClickDeleteButton={() => {
             handleClickDeleteOrUpdateButton("DELETE");
           }}

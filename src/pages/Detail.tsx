@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Col, Row } from "../assets/style/common";
@@ -16,8 +16,6 @@ import { ReactComponent as BackIcon } from "../assets/img/arrow_back.svg";
 const Detail = () => {
   // params
   const { id } = useParams();
-
-  // state
 
   // Redux
   const currentDir = useAppSelector(selectCurrentDir);
@@ -38,16 +36,13 @@ const Detail = () => {
           <BackIcon />
         </BackButton>
       </Link>
-
       {serverId && (
         <ExplorerWrapper>
           <ExplorerTopBar>
             <img src={DirectoryIcon} style={{ margin: "0px 14px" }} alt="Dic" />
             {currentDir.name || "폴더를 선택해주세요!"}
           </ExplorerTopBar>
-          <ExplorerOptionBar>
-           
-          </ExplorerOptionBar>
+          <ExplorerOptionBar></ExplorerOptionBar>
           <ExplorerContainer>
             <DirectoryList />
             <FileList />

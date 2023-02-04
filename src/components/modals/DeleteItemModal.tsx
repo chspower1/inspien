@@ -22,11 +22,13 @@ interface DeleteItemModalProps {
   type: ItemType;
 }
 const DeleteItemModal = ({ setIsMount, type }: DeleteItemModalProps) => {
+  // redux
   const serverId = useAppSelector(selectCurrentServerId);
   const currentDir = useAppSelector(selectCurrentDir);
   const currentFile = useAppSelector(selectCurrentFile);
   const dispatch = useAppDispatch();
 
+  // handler
   const handleClickDeleteButton = () => {
     if (type === "DIRECTORY") {
       // update currentDir
@@ -64,6 +66,7 @@ const DeleteItemModal = ({ setIsMount, type }: DeleteItemModalProps) => {
 
     setIsMount(false);
   };
+  
   return (
     <ModalWrapper height="300px">
       <ModalTitle>{type === "DIRECTORY" ? "폴더" : "파일"} 삭제</ModalTitle>

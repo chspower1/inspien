@@ -4,7 +4,7 @@ import { ReactComponent as DeleteIcon } from "../assets/img/delete.svg";
 import { ReactComponent as UpdateIcon } from "../assets/img/update.svg";
 import { ReactComponent as AddIcon } from "../assets/img/add.svg";
 import { ItemType } from "../types/mockupData";
-interface DropBoxProps {
+interface ContextMenuProps {
   type: ItemType;
   x: number;
   y: number;
@@ -12,14 +12,14 @@ interface DropBoxProps {
   handleClickUpdateButton: () => void;
   handleClickDeleteButton: () => void;
 }
-const DropBox = ({
+const ContextMenu = ({
   type,
   x,
   y,
   hadleClickAddButton,
   handleClickUpdateButton,
   handleClickDeleteButton,
-}: DropBoxProps) => {
+}: ContextMenuProps) => {
   const KOREAN_TYPE = {
     DIRECTORY: "폴더",
     FILE: "파일",
@@ -53,7 +53,7 @@ const DropBox = ({
     </Wrapper>
   );
 };
-export default DropBox;
+export default ContextMenu;
 const Wrapper = styled(Col)<{ x: number; y: number }>`
   position: absolute;
   justify-content: flex-start;
@@ -81,12 +81,4 @@ const Menu = styled(Row)`
   &:hover {
     background-color: #d9d9d9;
   }
-`;
-const CancleButton = styled(Menu)`
-  position: absolute;
-  bottom: 0px;
-  right: 0px;
-  width: auto;
-  padding: 6px 10px;
-  border-radius: 10px;
 `;

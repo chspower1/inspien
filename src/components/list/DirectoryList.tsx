@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Col, Row } from "../../assets/style/common";
+import { Col } from "../../assets/style/common";
 import { TreeContainer } from "../../assets/style/content";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import usePortal from "../../hooks/usePortal";
@@ -10,17 +10,21 @@ import AddItemModal from "../modals/AddItemModal";
 import DeleteItemModal from "../modals/DeleteItemModal";
 import UpdateItemModal from "../modals/UpdateItemModal";
 import styled from "styled-components";
-import DropBox from "../DropBox";
-import { selectDirectoryDropBox, setIsShowDropBox } from "../../store/slice/dropBoxSlice";
+import ContextMenu from "../ContextMenu";
 import ControllButtonBox from "../ControllButtonBox";
+import {
+  selectDirectoryContextMenu,
+  setIsShowContextMenu,
+} from "../../store/slice/contextMenuSlice";
+
 const DirectoryList = () => {
   // state
-  const [dropBox, setDropBox] = useState({
+  const [contextMenu, setContextMenu] = useState({
     x: 0,
     y: 0,
   });
   // redux state
-  const isShowDropBox = useAppSelector(selectDirectoryDropBox);
+  const isShowContextMenu = useAppSelector(selectDirectoryContextMenu);
   const currentData = useAppSelector(selectServerData);
   const currentDir = useAppSelector(selectCurrentDir);
   const dispatch = useAppDispatch();
@@ -32,7 +36,7 @@ const DirectoryList = () => {
 
   // handler
   const handleClickDeleteButton = () => {
-    dispatch(setIsShowDropBox("NONE"));
+    dispatch(setIsShowContextMenu("NONE"));
     // 최상위 폴더 삭제시도 시 예외처리
     if (currentDir.parent === undefined) return alert("최상위 폴더는 삭제할 수 없습니다.");
     if (currentDir.children.length > 0)
@@ -40,7 +44,7 @@ const DirectoryList = () => {
     setIsMountDeleteDirectory(true);
   };
   const handleClickUpdateButton = () => {
-    dispatch(setIsShowDropBox("NONE"));
+    dispatch(setIsShowContextMenu("NONE"));
     // 최상위 폴더 수정시도 시 예외처리
     if (currentDir.parent === undefined) return alert("최상위 폴더는 수정할 수 없습니다.");
     if (currentDir.name) {
@@ -48,7 +52,7 @@ const DirectoryList = () => {
     setIsMountUpdateDirectory(true);
   };
   const hadleClickAddButton = () => {
-    dispatch(setIsShowDropBox("NONE"));
+    dispatch(setIsShowContextMenu("NONE"));
     // 폴더를 선택하지 않았을 때 예외처리
     if (currentDir.name === "" && currentDir.parent === undefined)
       return alert("폴더를 선택해주세요!");
@@ -58,18 +62,17 @@ const DirectoryList = () => {
     e.preventDefault();
     const x = e.clientX;
     const y = e.clientY;
-    setDropBox({
+    setContextMenu({
       x: x,
       y: y,
     });
-    dispatch(setIsShowDropBox("DIRECTORY"));
-    console.log(x, y);
+    dispatch(setIsShowContextMenu("DIRECTORY"));
   };
   return (
     <Wrapper
       onContextMenu={handleContextMenu}
       onClick={() => {
-        dispatch(setIsShowDropBox("NONE"));
+        dispatch(setIsShowContextMenu("NONE"));
       }}
     >
       <ControllButtonBox
@@ -81,11 +84,11 @@ const DirectoryList = () => {
         <DirectoryTree children={currentData.directories} />
       </TreeContainer>
 
-      {isShowDropBox && (
-        <DropBox
+      {isShowContextMenu && (
+        <ContextMenu
           type="DIRECTORY"
-          x={dropBox.x}
-          y={dropBox.y}
+          x={contextMenu.x}
+          y={contextMenu.y}
           hadleClickAddButton={hadleClickAddButton}
           handleClickUpdateButton={handleClickUpdateButton}
           handleClickDeleteButton={handleClickDeleteButton}

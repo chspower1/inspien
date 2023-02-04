@@ -2,13 +2,15 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Col, Row } from "../assets/style/common";
-import { theme } from "../assets/style/theme";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { setCurrentDir } from "../store/slice/currentInfoSlice";
 
 const Home = () => {
+  // redux
   const data = useAppSelector((state) => state.data.value.directories);
   const dispatch = useAppDispatch();
+
+  // 홈으로 진입시 현재 디렉토리 초기화
   useEffect(() => {
     dispatch(
       setCurrentDir({
