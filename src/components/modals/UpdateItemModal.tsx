@@ -49,14 +49,17 @@ const UpdateItemModal = ({ setIsMount, type }: UpdateItemModalProps) => {
       if (currentDir?.children.find((item) => item.type === type && item.name === form.name))
         return alert("같은 경로에 이미 같은 이름의 파일이 존재합니다!");
       // update
-      dispatch(updateItem({ serverId, targetName: currentFile.name!, newName, currentDir }));
+      const currentTime = Date.now();
+      dispatch(
+        updateItem({ serverId, targetName: currentFile.name!, newName, currentDir, currentTime })
+      );
       dispatch(
         setCurrentDir({
           ...currentDir,
           children: [
             ...currentDir.children.map((item) =>
               item.name === currentFile.name
-                ? { ...item, name: newName, modified_date: Date.now() }
+                ? { ...item, name: newName, modified_date: currentTime }
                 : item
             ),
           ],

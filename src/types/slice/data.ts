@@ -14,4 +14,5 @@ export interface DeleteResponse extends Response {
 export interface UpdateResponse extends DeleteResponse {
   targetName: string;
   newName: string;
+  currentTime?: number;
 }

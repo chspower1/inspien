@@ -68,15 +68,16 @@ const dataSlice = createSlice({
       }
     },
     updateItem: (state, action: PayloadAction<UpdateResponse>) => {
-      const { currentDir, targetName, newName, serverId } = action.payload;
+      const { currentDir, targetName, newName, serverId, currentTime } = action.payload;
       const targetDirectory = searchInChildren(
         state.value.directories[serverId - 1].directories,
         currentDir.name,
         currentDir.parent
       );
       targetDirectory?.children.forEach((item) => {
-        if (item.name === targetName) {
+        if (item.name === targetName && item.type === "FILE") {
           item.name = newName;
+          item.modified_date = currentTime!;
         }
       });
     },
