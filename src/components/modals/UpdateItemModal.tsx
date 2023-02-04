@@ -36,14 +36,10 @@ const UpdateItemModal = ({ setIsMount, type }: UpdateItemModalProps) => {
 
   // 수정 버튼 클릭 시
   const onValid = (form: UpdateItemForm) => {
-    // 부모 폴더의 정보 조회
-    const targetDirectory = changeTargetToParent(currentDir, serverData);
-    // 같은이름일 경우 예외처리
-    if (targetDirectory?.children.find((item) => item.type === type && item.name === form.name))
-      return alert("같은 경로에 같이 이름의 폴더는 만들수 없습니다.");
-
     const newName = form.name;
     if (type === "FILE") {
+      if (currentDir?.children.find((item) => item.type === type && item.name === form.name))
+        return alert("같은 경로에 이미 같은 이름의 파일이 존재합니다!");
       dispatch(updateItem({ serverId, targetName: currentFile.name!, newName, currentDir }));
       dispatch(
         setCurrentDir({
@@ -58,6 +54,11 @@ const UpdateItemModal = ({ setIsMount, type }: UpdateItemModalProps) => {
         })
       );
     } else if (type === "DIRECTORY") {
+      // 부모 폴더의 정보 조회
+      const targetDirectory = changeTargetToParent(currentDir, serverData);
+      // 같은이름일 경우 예외처리
+      if (targetDirectory?.children.find((item) => item.type === type && item.name === form.name))
+        return alert("같은 경로에 같이 이름의 폴더는 만들수 없습니다.");
       dispatch(
         updateDirectory({
           serverId,
