@@ -9,6 +9,7 @@ import {
   setCurrentFile,
 } from "../../store/slice/currentInfoSlice";
 import { selectFileDropBox, setIsShowDropBox } from "../../store/slice/dropBoxSlice";
+import ControllButtonBox from "../ControllButtonBox";
 import DropBox from "../DropBox";
 import Item from "../Item";
 import ItemTitle from "../ItemTitle";
@@ -65,6 +66,15 @@ const FileList = () => {
         dispatch(setIsShowDropBox("NONE"));
       }}
     >
+      <ControllButtonBox
+        handleClickDeleteButton={() => {
+          handleClickDeleteOrUpdateButton("DELETE");
+        }}
+        handleClickUpdateButton={() => {
+          handleClickDeleteOrUpdateButton("UPDATE");
+        }}
+        hadleClickAddButton={handleClickAddButton}
+      />
       <ItemTitle />
       {currentDir.children?.map(
         (item) =>
