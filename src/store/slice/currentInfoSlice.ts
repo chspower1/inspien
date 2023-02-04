@@ -41,7 +41,6 @@ const currentInfoSlice = createSlice({
 });
 
 export const { setCurrentDir, setCurrentFile, setCurrentServer } = currentInfoSlice.actions;
-export const selectCurrentParent = (state: RootState) => state.currentInfo.value;
 export const selectCurrentDir = (state: RootState) => state.currentInfo.value.directory;
 export const selectCurrentFile = (state: RootState) => state.currentInfo.value.file;
 export const selectCurrentServerId = (state: RootState) => state.currentInfo.value.server.id;

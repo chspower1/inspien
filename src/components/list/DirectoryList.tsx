@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Col } from "../../assets/style/common";
 import { Button, ButtonBox, TreeItemBox } from "../../assets/style/content";
-import { useAppSelector } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import usePortal from "../../hooks/usePortal";
 import DirectoryTree from "../DirectoryTree";
 import { selectServerData } from "../../store/slice/dataSlice";
@@ -11,16 +11,18 @@ import DeleteItemModal from "../modals/DeleteItemModal";
 import UpdateItemModal from "../modals/UpdateItemModal";
 import styled from "styled-components";
 import DropBox from "../DropBox";
+import { selectDirectoryDropBox, setIsShowDropBox } from "../../store/slice/dropBoxSlice";
 const DirectoryList = () => {
   // state
-  const [isShowDropBox, setIsShowDropBox] = useState(false);
   const [dropBox, setDropBox] = useState({
     x: 0,
     y: 0,
   });
   // redux state
+  const isShowDropBox = useAppSelector(selectDirectoryDropBox);
   const currentData = useAppSelector(selectServerData);
   const currentDir = useAppSelector(selectCurrentDir);
+  const dispatch = useAppDispatch();
 
   // modal
   const { Portal: AddDirectoryPortal, setIsMount: setIsMountAddDirectory } = usePortal();
@@ -28,7 +30,7 @@ const DirectoryList = () => {
   const { Portal: DeleteDirectoryPortal, setIsMount: setIsMountDeleteDirectory } = usePortal();
 
   const handleClickDeleteButton = () => {
-    setIsShowDropBox(false);
+    dispatch(setIsShowDropBox("NONE"));
     // 최상위 폴더 삭제시도 시 예외처리
     if (currentDir.parent === undefined) return alert("최상위 폴더는 삭제할 수 없습니다.");
     if (currentDir.children.length > 0)
@@ -36,13 +38,15 @@ const DirectoryList = () => {
     setIsMountDeleteDirectory(true);
   };
   const handleClickUpdateButton = () => {
-    setIsShowDropBox(false);
+    dispatch(setIsShowDropBox("NONE"));
     // 최상위 폴더 수정시도 시 예외처리
     if (currentDir.parent === undefined) return alert("최상위 폴더는 수정할 수 없습니다.");
+    if (currentDir.name) {
+    }
     setIsMountUpdateDirectory(true);
   };
   const hadleClickAddButton = () => {
-    setIsShowDropBox(false);
+    dispatch(setIsShowDropBox("NONE"));
     // 폴더를 선택하지 않았을 때 예외처리
     if (currentDir.name === "" && currentDir.parent === undefined)
       return alert("폴더를 선택해주세요!");
@@ -56,14 +60,14 @@ const DirectoryList = () => {
       x: x,
       y: y,
     });
-    setIsShowDropBox(true);
+    dispatch(setIsShowDropBox("DIRECTORY"));
     console.log(x, y);
   };
   return (
     <Wrapper
       onContextMenu={handleContextMenu}
       onClick={() => {
-        setIsShowDropBox(false);
+        dispatch(setIsShowDropBox("NONE"));
       }}
     >
       <TreeItemBox>
@@ -74,7 +78,9 @@ const DirectoryList = () => {
           type="DIRECTORY"
           x={dropBox.x}
           y={dropBox.y}
-          setIsMount={setIsShowDropBox}
+          setIsMount={() => {
+            dispatch(setIsShowDropBox("NONE"));
+          }}
           hadleClickAddButton={hadleClickAddButton}
           handleClickUpdateButton={handleClickUpdateButton}
           handleClickDeleteButton={handleClickDeleteButton}

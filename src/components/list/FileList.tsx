@@ -8,6 +8,7 @@ import {
   selectCurrentFile,
   setCurrentFile,
 } from "../../store/slice/currentInfoSlice";
+import { selectFileDropBox, setIsShowDropBox } from "../../store/slice/dropBoxSlice";
 import DropBox from "../DropBox";
 import Item from "../Item";
 import ItemTitle from "../ItemTitle";
@@ -17,14 +18,14 @@ import UpdateItemModal from "../modals/UpdateItemModal";
 
 const FileList = () => {
   // state
-  const [isShowDropBox, setIsShowDropBox] = useState(false);
   const [dropBox, setDropBox] = useState({
     x: 0,
     y: 0,
   });
   // redux
-  const currentDir = useAppSelector((state) => selectCurrentDir(state));
-  const currentFile = useAppSelector((state) => selectCurrentFile(state));
+  const currentDir = useAppSelector(selectCurrentDir);
+  const currentFile = useAppSelector(selectCurrentFile);
+  const isShowDropBox = useAppSelector(selectFileDropBox);
   const dispatch = useAppDispatch();
 
   // modal
@@ -32,11 +33,18 @@ const FileList = () => {
   const { Portal: DeleteFilePortal, setIsMount: setIsMountDeleteFile } = usePortal();
   const { Portal: UpdateFilePortal, setIsMount: setIsMountUpdateFile } = usePortal();
 
+  // handle
   const handleClickDeleteOrUpdateButton = (mode: "DELETE" | "UPDATE") => {
+    dispatch(setIsShowDropBox("NONE"));
     // 파일을 선택하지 않았을 때 예외처리
     if (currentFile.name === undefined) return alert("파일을 선택해 주세요!");
     setIsMountDeleteFile(mode === "DELETE");
     setIsMountUpdateFile(mode === "UPDATE");
+  };
+
+  const handleClickAddButton = () => {
+    dispatch(setIsShowDropBox("NONE"));
+    setIsMountAddFile(true);
   };
   const handleContextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -46,7 +54,7 @@ const FileList = () => {
       x: x,
       y: y,
     });
-    setIsShowDropBox(true);
+    dispatch(setIsShowDropBox("FILE"));
     console.log(x, y);
   };
 
@@ -54,7 +62,7 @@ const FileList = () => {
     <Wrapper
       onContextMenu={handleContextMenu}
       onClick={() => {
-        setIsShowDropBox(false);
+        dispatch(setIsShowDropBox("NONE"));
       }}
     >
       <ItemTitle />
@@ -77,16 +85,16 @@ const FileList = () => {
           type="FILE"
           x={dropBox.x}
           y={dropBox.y}
-          setIsMount={setIsShowDropBox}
+          setIsMount={() => {
+            dispatch(setIsShowDropBox("NONE"));
+          }}
           handleClickDeleteButton={() => {
             handleClickDeleteOrUpdateButton("DELETE");
           }}
           handleClickUpdateButton={() => {
             handleClickDeleteOrUpdateButton("UPDATE");
           }}
-          hadleClickAddButton={() => {
-            setIsMountAddFile(true);
-          }}
+          hadleClickAddButton={handleClickAddButton}
         />
       )}
       <AddFilePortal>

@@ -8,8 +8,9 @@ import {
   selectCurrentServerId,
   setCurrentDir,
 } from "../../store/slice/currentInfoSlice";
-import { Directory, File, Item, ItemType } from "../../types/mockupData";
-import { updateDirectory, updateItem } from "../../store/slice/dataSlice";
+import type { ItemType } from "../../types/mockupData";
+import { selectServerData, updateDirectory, updateItem } from "../../store/slice/dataSlice";
+import { changeTargetToParent } from "../../utils/changeTargetToParent";
 interface UpdateItemForm {
   name: string;
   size?: number;
@@ -21,6 +22,7 @@ interface UpdateItemModalProps {
 const UpdateItemModal = ({ setIsMount, type }: UpdateItemModalProps) => {
   // redux state
   const serverId = useAppSelector(selectCurrentServerId);
+  const serverData = useAppSelector(selectServerData);
   const currentDir = useAppSelector(selectCurrentDir);
   const currentFile = useAppSelector(selectCurrentFile);
   const dispatch = useAppDispatch();
@@ -34,8 +36,12 @@ const UpdateItemModal = ({ setIsMount, type }: UpdateItemModalProps) => {
 
   // 수정 버튼 클릭 시
   const onValid = (form: UpdateItemForm) => {
-    if (currentDir.children.find((item) => item.type === type && item.name === form.name))
-      return alert("동일한 경로에는 같은 이름을 가진 파일 및 폴더를 생성할 수 없습니다!");
+    // 부모 폴더의 정보 조회
+    const targetDirectory = changeTargetToParent(currentDir, serverData);
+    // 같은이름일 경우 예외처리
+    if (targetDirectory?.children.find((item) => item.type === type && item.name === form.name))
+      return alert("같은 경로에 같이 이름의 폴더는 만들수 없습니다.");
+
     const newName = form.name;
     if (type === "FILE") {
       dispatch(updateItem({ serverId, targetName: currentFile.name!, newName, currentDir }));
