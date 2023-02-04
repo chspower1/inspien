@@ -4,6 +4,8 @@ import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { selectCurrentDir, setCurrentDir, setCurrentFile } from "../store/slice/currentInfoSlice";
 import { checkDirInChildren } from "../utils/checkDirInChildren";
 import DirectoryIcon from "../assets/img/directory_icon.png";
+import { ReactComponent as ArrowBottom } from "../assets/img/arrow_bottom.svg";
+import { ReactComponent as ArrowRight } from "../assets/img/arrow_right.svg";
 import { Children, Directory, File, Item } from "../types/mockupData";
 const DirectoryTree = ({ children }: { children: Children }) => {
   const currentDir = useAppSelector((state) => selectCurrentDir(state));
@@ -32,10 +34,11 @@ const DirectoryTree = ({ children }: { children: Children }) => {
                     : "normal"
                 }
                 onClick={() => handleClickDirectory(item)}
+                onContextMenu={() => handleClickDirectory(item)}
               >
                 {checkDirInChildren(item.children) && (
                   <OpenOrCloseButton onClick={() => setIsOpen(!isOpen)}>
-                    {isOpen ? "-" : "+"}
+                    {isOpen ? <ArrowBottom /> : <ArrowRight />}
                   </OpenOrCloseButton>
                 )}
                 <img src={DirectoryIcon} alt="Dic" />

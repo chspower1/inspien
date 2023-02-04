@@ -1,24 +1,20 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Col } from "../../assets/style/common";
-import { Button } from "../../assets/style/content";
 import usePortal from "../../hooks/usePortal";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
   selectCurrentDir,
   selectCurrentFile,
-  selectCurrentServerId,
-  setCurrentDir,
   setCurrentFile,
 } from "../../store/slice/currentInfoSlice";
-import DropBox from "../drop-box/DropBox";
+import DropBox from "../DropBox";
 import Item from "../Item";
 import ItemTitle from "../ItemTitle";
 import AddItemModal from "../modals/AddItemModal";
 import DeleteItemModal from "../modals/DeleteItemModal";
 import UpdateItemModal from "../modals/UpdateItemModal";
 
-interface FileListProps {}
 const FileList = () => {
   // state
   const [isShowDropBox, setIsShowDropBox] = useState(false);
@@ -53,7 +49,7 @@ const FileList = () => {
     setIsShowDropBox(true);
     console.log(x, y);
   };
-  useEffect(() => {}, [dropBox]);
+
   return (
     <Wrapper
       onContextMenu={handleContextMenu}
@@ -78,11 +74,19 @@ const FileList = () => {
       )}
       {isShowDropBox && (
         <DropBox
+          type="FILE"
           x={dropBox.x}
           y={dropBox.y}
           setIsMount={setIsShowDropBox}
-          setIsMountAddFile={setIsMountAddFile}
-          handleClickDeleteOrUpdateButton={handleClickDeleteOrUpdateButton}
+          handleClickDeleteButton={() => {
+            handleClickDeleteOrUpdateButton("DELETE");
+          }}
+          handleClickUpdateButton={() => {
+            handleClickDeleteOrUpdateButton("UPDATE");
+          }}
+          hadleClickAddButton={() => {
+            setIsMountAddFile(true);
+          }}
         />
       )}
       <AddFilePortal>
