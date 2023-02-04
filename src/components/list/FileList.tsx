@@ -11,6 +11,7 @@ import {
   setCurrentDir,
   setCurrentFile,
 } from "../../store/slice/currentInfoSlice";
+import DropBox from "../drop-box/DropBox";
 import Item from "../Item";
 import AddItemModal from "../modals/AddItemModal";
 import DeleteItemModal from "../modals/DeleteItemModal";
@@ -51,7 +52,6 @@ const FileList = () => {
     setIsShowDropBox(true);
     console.log(x, y);
   };
-  // const handleClickWrapper = (e) => {};
   useEffect(() => {}, [dropBox]);
   return (
     <Wrapper
@@ -76,19 +76,7 @@ const FileList = () => {
             </div>
           )
       )}
-      {isShowDropBox && (
-        <DropBox
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-          x={dropBox.x}
-          y={dropBox.y}
-        >
-          <div>파일 만들기</div>
-          <div>속성 </div>
-          <button onClick={() => setIsShowDropBox(false)}>취소</button>
-        </DropBox>
-      )}
+      {isShowDropBox && <DropBox x={dropBox.x} y={dropBox.y} setIsMount={setIsShowDropBox} />}
       <AddFilePortal>
         <AddItemModal type="FILE" setIsMount={setIsMountAddFile} />
       </AddFilePortal>
@@ -107,12 +95,4 @@ const Wrapper = styled(Col)`
   width: 1000px;
   height: 1000px;
   justify-content: flex-start;
-`;
-const DropBox = styled.div<{ x: number; y: number }>`
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  background-color: gray;
-  left: ${({ x }) => x + "px"};
-  top: ${({ y }) => y + "px"};
 `;
