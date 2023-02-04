@@ -10,7 +10,6 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import Input from "../Input";
 import {
   selectCurrentDir,
-  selectCurrentFile,
   selectCurrentServerId,
   setCurrentDir,
 } from "../../store/slice/currentInfoSlice";
