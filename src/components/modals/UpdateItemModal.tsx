@@ -50,7 +50,9 @@ const UpdateItemModal = ({ setIsMount, type }: UpdateItemModalProps) => {
           ...currentDir,
           children: [
             ...currentDir.children.map((item) =>
-              item.name === currentFile.name ? { ...item, name: newName } : item
+              item.name === currentFile.name
+                ? { ...item, name: newName, modified_date: Date.now() }
+                : item
             ),
           ],
         })
