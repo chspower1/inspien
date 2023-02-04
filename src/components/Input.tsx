@@ -27,7 +27,7 @@ export const Title = styled.h1`
 export const InputBox = styled(Col)`
   position: relative;
   align-items: flex-start;
-  width: 500px;
+  width: 300px;
   height: 60px;
   margin-bottom: 30px;
 `;

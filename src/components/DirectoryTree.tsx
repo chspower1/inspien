@@ -7,6 +7,7 @@ import DirectoryIcon from "../assets/img/directory_icon.png";
 import { ReactComponent as ArrowBottom } from "../assets/img/arrow_bottom.svg";
 import { ReactComponent as ArrowRight } from "../assets/img/arrow_right.svg";
 import { Children, Directory, File, Item } from "../types/mockupData";
+import styled from "styled-components";
 const DirectoryTree = ({ children }: { children: Children }) => {
   const currentDir = useAppSelector((state) => selectCurrentDir(state));
   const dispatch = useAppDispatch();
@@ -41,7 +42,7 @@ const DirectoryTree = ({ children }: { children: Children }) => {
                     {isOpen ? <ArrowBottom /> : <ArrowRight />}
                   </OpenOrCloseButton>
                 )}
-                <img src={DirectoryIcon} alt="Dic" />
+                <DirectoryImg src={DirectoryIcon} alt="Dic" />
                 {item.name}
               </DirectoryItem>
               <TreeItemBox>{isOpen && <DirectoryTree children={item.children} />}</TreeItemBox>
@@ -53,3 +54,6 @@ const DirectoryTree = ({ children }: { children: Children }) => {
 };
 
 export default DirectoryTree;
+const DirectoryImg = styled.img`
+  margin-right: 4px;
+`;

@@ -1,5 +1,11 @@
 import { useForm } from "react-hook-form";
-import { ModalWrapper, ConfirmButton, ClosingButton } from "../../assets/style/modal";
+import {
+  ModalWrapper,
+  ConfirmButton,
+  ClosingButton,
+  ModalTitle,
+  ButtonBox,
+} from "../../assets/style/modal";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import Input from "../Input";
 import {
@@ -20,6 +26,7 @@ interface UpdateItemModalProps {
   type: ItemType;
 }
 const UpdateItemModal = ({ setIsMount, type }: UpdateItemModalProps) => {
+  const targetType = type === "DIRECTORY" ? "폴더" : "파일";
   // redux state
   const serverId = useAppSelector(selectCurrentServerId);
   const serverData = useAppSelector(selectServerData);
@@ -38,8 +45,10 @@ const UpdateItemModal = ({ setIsMount, type }: UpdateItemModalProps) => {
   const onValid = (form: UpdateItemForm) => {
     const newName = form.name;
     if (type === "FILE") {
+      // 같은 이름일 경우 예외처리
       if (currentDir?.children.find((item) => item.type === type && item.name === form.name))
         return alert("같은 경로에 이미 같은 이름의 파일이 존재합니다!");
+      // update
       dispatch(updateItem({ serverId, targetName: currentFile.name!, newName, currentDir }));
       dispatch(
         setCurrentDir({
@@ -59,6 +68,7 @@ const UpdateItemModal = ({ setIsMount, type }: UpdateItemModalProps) => {
       // 같은이름일 경우 예외처리
       if (targetDirectory?.children.find((item) => item.type === type && item.name === form.name))
         return alert("같은 경로에 같이 이름의 폴더는 만들수 없습니다.");
+      // update
       dispatch(
         updateDirectory({
           serverId,
@@ -72,20 +82,26 @@ const UpdateItemModal = ({ setIsMount, type }: UpdateItemModalProps) => {
   };
   return (
     <ModalWrapper>
+      <ModalTitle>{targetType} 수정</ModalTitle>
       <form onSubmit={handleSubmit(onValid)}>
-        <div>{type === "FILE" ? "파일" : "폴더"} 수정</div>
-        <div>현재 {type === "FILE" ? "파일" : "폴더"}</div>
-        <div>이름 : {type === "FILE" ? currentFile.name : currentDir.name}</div>
+        <div style={{ marginBottom: "20px" }}>
+          현재 {targetType} 이름 : {type === "FILE" ? currentFile.name : currentDir.name}
+        </div>
+
         <Input
-          label={type === "FILE" ? "수정할 파일 이름" : "수정할 폴더 이름"}
+          label="수정할 이름"
           name="name"
           register={register("name", {
             required: type === "FILE" ? "파일 이름을 입력해주세요!" : "폴더 이름을 입력해주세요!",
           })}
           errorMessage={errors.name?.message || null}
         />
-        <ConfirmButton>수정완료</ConfirmButton>
-        <ClosingButton onClick={() => setIsMount(false)}>취소</ClosingButton>
+        <ButtonBox>
+          <ConfirmButton>수정완료</ConfirmButton>
+          <ClosingButton type="button" onClick={() => setIsMount(false)}>
+            취소
+          </ClosingButton>
+        </ButtonBox>
       </form>
     </ModalWrapper>
   );

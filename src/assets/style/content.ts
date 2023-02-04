@@ -7,9 +7,7 @@ export const BackButton = styled.button`
   border-radius: 50px;
   background-color: ${({ theme }) => theme.blue};
 `;
-export const ButtonBox = styled(Row)`
-  gap: 10px;
-`;
+
 export const Button = styled.button<{ isDelete?: boolean }>`
   width: 100px;
   height: 60px;
@@ -17,13 +15,16 @@ export const Button = styled.button<{ isDelete?: boolean }>`
   background-color: ${({ theme, isDelete }) => (isDelete ? theme.red : theme.blue)};
   color: white;
 `;
+export const TreeContainer = styled.div`
+  margin: 10px 20px;
+`;
 export const TreeItemBox = styled.div`
   position: relative;
   margin-left: 10px;
 `;
 export const DirectoryItem = styled(Row)`
   justify-content: flex-start;
-  width: auto;
+  /* width: auto; */
   padding: 0px 10px;
   height: 35px;
   cursor: pointer;
@@ -37,7 +38,7 @@ export const DirectoryItem = styled(Row)`
 `;
 export const OpenOrCloseButton = styled.button`
   position: absolute;
-  left: -26px;
+  left: -20px;
   width: 26px;
   height: 26px;
   color: white;

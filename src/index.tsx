@@ -6,6 +6,7 @@ import { GlobalStyled } from "./assets/style/GlobalStyles";
 import store from "./store/configureStore";
 import { theme } from "./assets/style/theme";
 import { ThemeProvider } from "styled-components";
+import Layout from "./components/Layout";
 const root = ReactDOM.createRoot(document.getElementById("app-root") as HTMLElement);
 
 root.render(

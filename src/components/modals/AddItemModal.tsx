@@ -1,5 +1,11 @@
 import { useForm } from "react-hook-form";
-import { ModalWrapper, ConfirmButton, ClosingButton } from "../../assets/style/modal";
+import {
+  ModalWrapper,
+  ConfirmButton,
+  ClosingButton,
+  ModalTitle,
+  ButtonBox,
+} from "../../assets/style/modal";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import Input from "../Input";
 import {
@@ -61,6 +67,7 @@ const AddItemModal = ({ setIsMount, type }: AddItemModalProps) => {
   };
   return (
     <ModalWrapper>
+      <ModalTitle>{type === "FILE" ? "파일" : "폴더"} 추가</ModalTitle>
       <form onSubmit={handleSubmit(onValid)}>
         {type === "FILE" ? (
           <>
@@ -92,10 +99,13 @@ const AddItemModal = ({ setIsMount, type }: AddItemModalProps) => {
             errorMessage={errors.name?.message || null}
           />
         )}
-
-        <ConfirmButton>추가</ConfirmButton>
+        <ButtonBox>
+          <ConfirmButton>추가</ConfirmButton>
+          <ClosingButton type="button" onClick={() => setIsMount(false)}>
+            취소
+          </ClosingButton>
+        </ButtonBox>
       </form>
-      <ClosingButton onClick={() => setIsMount(false)}>취소</ClosingButton>
     </ModalWrapper>
   );
 };

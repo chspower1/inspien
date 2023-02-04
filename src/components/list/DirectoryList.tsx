@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Col } from "../../assets/style/common";
-import { Button, ButtonBox, TreeItemBox } from "../../assets/style/content";
+import { TreeContainer } from "../../assets/style/content";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import usePortal from "../../hooks/usePortal";
 import DirectoryTree from "../DirectoryTree";
@@ -70,17 +70,15 @@ const DirectoryList = () => {
         dispatch(setIsShowDropBox("NONE"));
       }}
     >
-      <TreeItemBox>
+      <TreeContainer>
         <DirectoryTree children={currentData.directories} />
-      </TreeItemBox>
+      </TreeContainer>
+
       {isShowDropBox && (
         <DropBox
           type="DIRECTORY"
           x={dropBox.x}
           y={dropBox.y}
-          setIsMount={() => {
-            dispatch(setIsShowDropBox("NONE"));
-          }}
           hadleClickAddButton={hadleClickAddButton}
           handleClickUpdateButton={handleClickUpdateButton}
           handleClickDeleteButton={handleClickDeleteButton}
@@ -102,6 +100,9 @@ export default DirectoryList;
 
 const Wrapper = styled(Col)`
   justify-content: flex-start;
-  width: 460px;
-  height: 1000px;
+  align-items: flex-start;
+  width: 25%;
+  height: 100%;
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  overflow: scroll;
 `;

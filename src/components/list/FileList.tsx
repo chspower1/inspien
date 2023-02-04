@@ -70,6 +70,7 @@ const FileList = () => {
         (item) =>
           item.type === "FILE" && (
             <div
+              style={{ width: "100%" }}
               key={currentDir.parent + currentDir.name + item.name}
               onClick={() => dispatch(setCurrentFile({ name: item.name, parent: currentDir.name }))}
               onContextMenu={() =>
@@ -85,9 +86,6 @@ const FileList = () => {
           type="FILE"
           x={dropBox.x}
           y={dropBox.y}
-          setIsMount={() => {
-            dispatch(setIsShowDropBox("NONE"));
-          }}
           handleClickDeleteButton={() => {
             handleClickDeleteOrUpdateButton("DELETE");
           }}
@@ -112,7 +110,8 @@ const FileList = () => {
 export default FileList;
 
 const Wrapper = styled(Col)`
-  width: 1000px;
-  height: 1000px;
+  width: 75%;
+  height: 100%;
   justify-content: flex-start;
+  overflow: scroll;
 `;

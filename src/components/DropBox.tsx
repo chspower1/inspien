@@ -2,12 +2,12 @@ import styled from "styled-components";
 import { Col, Row } from "../assets/style/common";
 import { ReactComponent as DeleteIcon } from "../assets/img/delete.svg";
 import { ReactComponent as UpdateIcon } from "../assets/img/update.svg";
+import { ReactComponent as AddIcon } from "../assets/img/add.svg";
 import { ItemType } from "../types/mockupData";
 interface DropBoxProps {
   type: ItemType;
   x: number;
   y: number;
-  setIsMount: React.Dispatch<React.SetStateAction<boolean>>;
   hadleClickAddButton: () => void;
   handleClickUpdateButton: () => void;
   handleClickDeleteButton: () => void;
@@ -16,7 +16,6 @@ const DropBox = ({
   type,
   x,
   y,
-  setIsMount,
   hadleClickAddButton,
   handleClickUpdateButton,
   handleClickDeleteButton,
@@ -34,20 +33,23 @@ const DropBox = ({
       }}
     >
       <Menu onClick={hadleClickAddButton}>
-        <PlusIcon>+</PlusIcon>
+        <Icon>
+          <AddIcon />
+        </Icon>
         {KOREAN_TYPE[type]} 생성
       </Menu>
       <Menu onClick={handleClickUpdateButton}>
-        <UpdateIcon />
+        <Icon>
+          <UpdateIcon />
+        </Icon>
         {KOREAN_TYPE[type]} 수정
       </Menu>
       <Menu onClick={handleClickDeleteButton}>
-        <DeleteIcon />
+        <Icon>
+          <DeleteIcon />
+        </Icon>
         {KOREAN_TYPE[type]} 삭제
       </Menu>
-      <CancleButton onClick={() => setIsMount(false)}>
-        <CancleIcon>x</CancleIcon>취소
-      </CancleButton>
     </Wrapper>
   );
 };
@@ -56,22 +58,17 @@ const Wrapper = styled(Col)<{ x: number; y: number }>`
   position: absolute;
   justify-content: flex-start;
   width: 200px;
-  height: 200px;
+  height: 150px;
   background-color: ${({ theme }) => theme.gray};
   left: ${({ x }) => x + "px"};
   top: ${({ y }) => y + "px"};
   padding: 5px;
 `;
-const PlusIcon = styled(Row)`
+const Icon = styled(Row)`
   width: 16px;
   height: 16px;
   border-radius: 10px;
-  background-color: ${({ theme }) => theme.blue};
-  color: white;
-  margin: 0px 2px;
-`;
-const CancleIcon = styled(PlusIcon)`
-  background-color: ${({ theme }) => theme.red};
+  margin: 0px 6px;
 `;
 
 const Menu = styled(Row)`

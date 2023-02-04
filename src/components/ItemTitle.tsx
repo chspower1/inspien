@@ -17,7 +17,7 @@ const ItemTitle = () => {
 export default ItemTitle;
 
 const ItemTitleWrapper = styled(Row)`
-  width: 1000px;
-  height: 80px;
+  width: 100%;
+  height: 60px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 `;

@@ -1,5 +1,12 @@
 import { Row } from "../../assets/style/common";
-import { ClosingButton, ConfirmButton, ModalWrapper } from "../../assets/style/modal";
+import {
+  Accent,
+  ButtonBox,
+  ClosingButton,
+  ConfirmButton,
+  ModalTitle,
+  ModalWrapper,
+} from "../../assets/style/modal";
 
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
@@ -58,14 +65,16 @@ const DeleteItemModal = ({ setIsMount, type }: DeleteItemModalProps) => {
     setIsMount(false);
   };
   return (
-    <ModalWrapper>
-      <div>
-        정말 {type === "DIRECTORY" ? currentDir.name : currentFile.name}를 삭제하시겠습니까?
-      </div>
+    <ModalWrapper height="300px">
+      <ModalTitle>{type === "DIRECTORY" ? "폴더" : "파일"} 삭제</ModalTitle>
       <Row>
+        정말 <Accent>{type === "DIRECTORY" ? currentDir.name : currentFile.name}</Accent> 를
+        삭제하시겠습니까?
+      </Row>
+      <ButtonBox>
         <ConfirmButton onClick={handleClickDeleteButton}>삭제</ConfirmButton>
         <ClosingButton onClick={() => setIsMount(false)}>취소</ClosingButton>
-      </Row>
+      </ButtonBox>
     </ModalWrapper>
   );
 };
