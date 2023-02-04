@@ -58,7 +58,7 @@ const Wrapper = styled(Col)<{ x: number; y: number }>`
   position: absolute;
   justify-content: flex-start;
   width: 200px;
-  height: 150px;
+  height: 120px;
   background-color: ${({ theme }) => theme.gray};
   left: ${({ x }) => x + "px"};
   top: ${({ y }) => y + "px"};
@@ -74,7 +74,7 @@ const Icon = styled(Row)`
 const Menu = styled(Row)`
   justify-content: flex-start;
   width: 100%;
-  height: 30px;
+  height: 40px;
   cursor: pointer;
   color: ${({ theme }) => theme.text};
   transition: all 0.3s ease;

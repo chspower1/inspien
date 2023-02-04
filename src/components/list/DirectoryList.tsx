@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Col } from "../../assets/style/common";
+import { Col, Row } from "../../assets/style/common";
 import { TreeContainer } from "../../assets/style/content";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import usePortal from "../../hooks/usePortal";
@@ -9,6 +9,9 @@ import { selectCurrentDir } from "../../store/slice/currentInfoSlice";
 import AddItemModal from "../modals/AddItemModal";
 import DeleteItemModal from "../modals/DeleteItemModal";
 import UpdateItemModal from "../modals/UpdateItemModal";
+import { ReactComponent as AddIcon } from "../../assets/img/add.svg";
+import { ReactComponent as UpdateIcon } from "../../assets/img/update.svg";
+import { ReactComponent as DeleteIcon } from "../../assets/img/delete.svg";
 import styled from "styled-components";
 import DropBox from "../DropBox";
 import { selectDirectoryDropBox, setIsShowDropBox } from "../../store/slice/dropBoxSlice";
@@ -29,6 +32,7 @@ const DirectoryList = () => {
   const { Portal: UpdateDirectoryPortal, setIsMount: setIsMountUpdateDirectory } = usePortal();
   const { Portal: DeleteDirectoryPortal, setIsMount: setIsMountDeleteDirectory } = usePortal();
 
+  // handler
   const handleClickDeleteButton = () => {
     dispatch(setIsShowDropBox("NONE"));
     // 최상위 폴더 삭제시도 시 예외처리
@@ -70,6 +74,20 @@ const DirectoryList = () => {
         dispatch(setIsShowDropBox("NONE"));
       }}
     >
+      <Row style={{ width: "100%" }}>
+        <ControllButton onClick={hadleClickAddButton}>
+          <AddIcon width="16px" height="16px" />
+          추가
+        </ControllButton>
+        <ControllButton onClick={handleClickUpdateButton}>
+          <UpdateIcon width="16px" height="16px" />
+          수정
+        </ControllButton>
+        <ControllButton onClick={handleClickDeleteButton}>
+          <DeleteIcon width="16px" height="16px" />
+          삭제
+        </ControllButton>
+      </Row>
       <TreeContainer>
         <DirectoryTree children={currentData.directories} />
       </TreeContainer>
@@ -105,4 +123,16 @@ const Wrapper = styled(Col)`
   height: 100%;
   border-right: 1px solid rgba(0, 0, 0, 0.1);
   overflow: scroll;
+`;
+const ControllButton = styled(Row)`
+  width: 33.3%;
+  height: 40px;
+  gap: 8px;
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: #e6e6e6;
+  }
 `;

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Col, Row } from "../assets/style/common";
@@ -12,11 +12,15 @@ import {
   setCurrentServer,
 } from "../store/slice/currentInfoSlice";
 import { ReactComponent as BackIcon } from "../assets/img/arrow_back.svg";
+
 const Detail = () => {
   // params
   const { id } = useParams();
-  const currentDir = useAppSelector(selectCurrentDir);
+
+  // state
+
   // Redux
+  const currentDir = useAppSelector(selectCurrentDir);
   const serverId = useAppSelector(selectCurrentServerId);
   const dispatch = useAppDispatch();
 
@@ -41,6 +45,9 @@ const Detail = () => {
             <img src={DirectoryIcon} style={{ margin: "0px 14px" }} alt="Dic" />
             {currentDir.name || "폴더를 선택해주세요!"}
           </ExplorerTopBar>
+          <ExplorerOptionBar>
+           
+          </ExplorerOptionBar>
           <ExplorerContainer>
             <DirectoryList />
             <FileList />
@@ -77,6 +84,11 @@ const ExplorerTopBar = styled(Row)`
   background-color: ${({ theme }) => theme.gray};
   border-radius: 10px 10px 0px 0px;
 `;
+const ExplorerOptionBar = styled(ExplorerTopBar)`
+  height: 60px;
+  border: 0px;
+`;
+
 const ExplorerContainer = styled(Row)`
   width: 100%;
   height: 100%;
