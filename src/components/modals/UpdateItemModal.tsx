@@ -16,7 +16,6 @@ import {
   selectCurrentServerId,
   setCurrentDir,
 } from "../../store/slice/currentInfoSlice";
-import type { ItemType } from "../../types/mockupData";
 import { selectServerData, updateDirectory, updateItem } from "../../store/slice/dataSlice";
 import { changeTargetToParent } from "../../utils/changeTargetToParent";
 import { ModalProps } from "../../types/modal";
@@ -27,7 +26,6 @@ interface UpdateItemForm {
   size?: number;
 }
 const UpdateItemModal = ({ isMount, setIsMount, type }: ModalProps) => {
-
   const targetType = type === "DIRECTORY" ? "폴더" : "파일";
   // redux state
   const serverId = useAppSelector(selectCurrentServerId);
@@ -41,6 +39,7 @@ const UpdateItemModal = ({ isMount, setIsMount, type }: ModalProps) => {
     register,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm<UpdateItemForm>();
 
   // 수정 버튼 클릭 시
@@ -83,6 +82,10 @@ const UpdateItemModal = ({ isMount, setIsMount, type }: ModalProps) => {
         })
       );
     }
+    onClose();
+  };
+  const onClose = () => {
+    reset();
     setIsMount(false);
   };
 
@@ -90,7 +93,7 @@ const UpdateItemModal = ({ isMount, setIsMount, type }: ModalProps) => {
     <AnimatePresence>
       {isMount && (
         <ModalWrapper>
-          <Overlay onClick={() => setIsMount(false)} />
+          <Overlay onClick={onClose} />
           <ModalContainer>
             <ModalTitle>{targetType} 수정</ModalTitle>
             <form onSubmit={handleSubmit(onValid)}>
@@ -109,7 +112,7 @@ const UpdateItemModal = ({ isMount, setIsMount, type }: ModalProps) => {
               />
               <ButtonBox>
                 <ConfirmButton>수정완료</ConfirmButton>
-                <ClosingButton type="button" onClick={() => setIsMount(false)}>
+                <ClosingButton type="button" onClick={onClose}>
                   취소
                 </ClosingButton>
               </ButtonBox>

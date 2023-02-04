@@ -94,16 +94,20 @@ const DirectoryList = () => {
           />
         )}
       </AnimatePresence>
-      <AddItemModal type="FILE" isMount={isMountAddDirectory} setIsMount={setIsMountAddDirectory} />
+      <AddItemModal
+        type="DIRECTORY"
+        isMount={isMountAddDirectory}
+        setIsMount={setIsMountAddDirectory}
+      />
 
       <DeleteItemModal
-        type="FILE"
+        type="DIRECTORY"
         isMount={isMountDeleteDirectory}
         setIsMount={setIsMountDeleteDirectory}
       />
 
       <UpdateItemModal
-        type="FILE"
+        type="DIRECTORY"
         isMount={isMountUpdateDirectory}
         setIsMount={setIsMountUpdateDirectory}
       />

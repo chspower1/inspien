@@ -7,9 +7,6 @@ export const GlobalStyled = createGlobalStyle`
         outline: none;
         border: none;
     }
-    /* ::-webkit-scrollbar {
-        display: none;
-    } */
     *{
         font-family: "Sebang";      
         font-size: 16px;
@@ -19,8 +16,6 @@ export const GlobalStyled = createGlobalStyle`
         -webkit-text-size-adjust: none;
         font-family: "Sebang";       
         font-display: fallback;
-        /* -ms-overflow-style: none; 
-        scrollbar-width: none; */
     }
     button {
         background: none;

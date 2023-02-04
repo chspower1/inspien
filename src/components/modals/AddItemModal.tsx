@@ -16,7 +16,7 @@ import {
   setCurrentDir,
 } from "../../store/slice/currentInfoSlice";
 import { addItem } from "../../store/slice/dataSlice";
-import { Item, ItemType } from "../../types/mockupData";
+import { Item } from "../../types/mockupData";
 import { AnimatePresence } from "framer-motion";
 import { ModalProps } from "../../types/modal";
 import ReactDOM from "react-dom";
@@ -26,7 +26,6 @@ interface AddItemForm {
 }
 
 const AddItemModal = ({ isMount, setIsMount, type }: ModalProps) => {
-
   // redux state
   const serverId = useAppSelector(selectCurrentServerId);
   const currentDir = useAppSelector(selectCurrentDir);
@@ -37,6 +36,7 @@ const AddItemModal = ({ isMount, setIsMount, type }: ModalProps) => {
     register,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm<AddItemForm>();
 
   // 추가 버튼 클릭 시
@@ -66,13 +66,17 @@ const AddItemModal = ({ isMount, setIsMount, type }: ModalProps) => {
         children: [...currentDir.children, newItem],
       })
     );
+    onClose();
+  };
+  const onClose = () => {
+    reset();
     setIsMount(false);
   };
   const ModalContent = (
     <AnimatePresence>
       {isMount && (
         <ModalWrapper>
-          <Overlay onClick={() => setIsMount(false)} />
+          <Overlay onClick={onClose} />
           <ModalContainer>
             <ModalTitle>{type === "FILE" ? "파일" : "폴더"} 추가</ModalTitle>
             <form onSubmit={handleSubmit(onValid)}>
@@ -108,7 +112,7 @@ const AddItemModal = ({ isMount, setIsMount, type }: ModalProps) => {
               )}
               <ButtonBox>
                 <ConfirmButton>추가</ConfirmButton>
-                <ClosingButton type="button" onClick={() => setIsMount(false)}>
+                <ClosingButton type="button" onClick={onClose}>
                   취소
                 </ClosingButton>
               </ButtonBox>

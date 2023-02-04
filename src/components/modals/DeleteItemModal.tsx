@@ -19,7 +19,6 @@ import {
   setCurrentDir,
 } from "../../store/slice/currentInfoSlice";
 import { removeDirectory, removeFile } from "../../store/slice/dataSlice";
-import { ItemType } from "../../types/mockupData";
 import { ModalProps } from "../../types/modal";
 import ReactDOM from "react-dom";
 

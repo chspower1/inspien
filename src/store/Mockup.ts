@@ -23,34 +23,52 @@ export const MockupState: MockupDate = {
                   modified_date: 1674035700000,
                 },
                 {
-                  name: "home2",
+                  name: "hosung",
                   type: "DIRECTORY",
                   parent: "/home",
                   children: [
                     {
-                      name: ".asd",
+                      name: "my",
                       type: "FILE",
                       file_size: 32819,
                       modified_date: 1674035700000,
                     },
                     {
-                      name: "home",
-                      type: "DIRECTORY",
-                      parent: "/home/home2",
-                      children: [
-                        {
-                          name: ".bash_history",
-                          type: "FILE",
-                          file_size: 32819,
-                          modified_date: 1674035700000,
-                        },
-                        {
-                          name: "home2",
-                          type: "DIRECTORY",
-                          parent: "/home/home2/home",
-                          children: [],
-                        },
-                      ],
+                      name: "name",
+                      type: "FILE",
+                      file_size: 1234,
+                      modified_date: 1674035700000,
+                    },
+                    {
+                      name: "is",
+                      type: "FILE",
+                      file_size: 32523,
+                      modified_date: 1674035700000,
+                    },
+                    {
+                      name: "hosung",
+                      type: "FILE",
+                      file_size: 6435,
+                      modified_date: 1674035700000,
+                    },
+                  ],
+                },
+                {
+                  name: "haneul",
+                  type: "DIRECTORY",
+                  parent: "/home",
+                  children: [
+                    {
+                      name: "index.html",
+                      type: "FILE",
+                      file_size: 32819,
+                      modified_date: 1674035700000,
+                    },
+                    {
+                      name: ".git",
+                      type: "FILE",
+                      file_size: 1234,
+                      modified_date: 1674035700000,
                     },
                   ],
                 },

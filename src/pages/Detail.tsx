@@ -41,7 +41,7 @@ const Detail = () => {
             <img src={DirectoryIcon} style={{ margin: "0px 14px" }} alt="Dic" />
             {currentDir.name || "폴더를 선택해주세요!"}
           </ExplorerTopBar>
-          <ExplorerOptionBar></ExplorerOptionBar>
+          <ExplorerOptionBar />
           <ExplorerContainer>
             <DirectoryList />
             <FileList />
@@ -79,7 +79,7 @@ const ExplorerTopBar = styled(Row)`
   border-radius: 10px 10px 0px 0px;
 `;
 const ExplorerOptionBar = styled(ExplorerTopBar)`
-  height: 60px;
+  height: 30px;
   border: 0px;
 `;
 

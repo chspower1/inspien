@@ -16,6 +16,7 @@
 
 - [x] 추가뿐만 아니라 삭제,수정도 Modal로 구현
 - [x] Custom ContextMenu를 통해 우클릭으로도 추가,삭제,수정 기능 구현(사용자 접근성 고려)
+- [x] modal animation,context menu 적용
 
 ## 사용 기술 스택
 
@@ -35,3 +36,4 @@
 - ### 스타일
 
     <img src="https://img.shields.io/badge/Styled Components-DB7093?style=flat-square&logo=styled-components&logoColor=white"/>
+    <img src="https://img.shields.io/badge/Framer Motion-0055FF?style=flat-square&logo=Framer&logoColor=white"/>
