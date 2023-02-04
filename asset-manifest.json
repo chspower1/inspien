@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/inspien/static/css/main.b847a306.css",
-    "main.js": "/inspien/static/js/main.72fc9c9e.js",
+    "main.js": "/inspien/static/js/main.5b5640b0.js",
     "static/media/SEBANG_Gothic_OTF.otf": "/inspien/static/media/SEBANG_Gothic_OTF.e673ab34f409ada50620.otf",
     "static/media/SEBANG_Gothic_OTF_Bold.otf": "/inspien/static/media/SEBANG_Gothic_OTF_Bold.799512f7506013ea5139.otf",
     "index.html": "/inspien/index.html",
@@ -13,10 +13,10 @@
     "static/media/arrow_bottom.svg": "/inspien/static/media/arrow_bottom.ba6bc752e9da9039ba718c6576aec47a.svg",
     "static/media/arrow_right.svg": "/inspien/static/media/arrow_right.850a984af4449dd6ef64a9708b264a2d.svg",
     "main.b847a306.css.map": "/inspien/static/css/main.b847a306.css.map",
-    "main.72fc9c9e.js.map": "/inspien/static/js/main.72fc9c9e.js.map"
+    "main.5b5640b0.js.map": "/inspien/static/js/main.5b5640b0.js.map"
   },
   "entrypoints": [
     "static/css/main.b847a306.css",
-    "static/js/main.72fc9c9e.js"
+    "static/js/main.5b5640b0.js"
   ]
 }
