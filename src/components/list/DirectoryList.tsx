@@ -7,6 +7,7 @@ import { selectServerData } from "../../store/slice/dataSlice";
 import { selectCurrentDir } from "../../store/slice/currentInfoSlice";
 import AddItemModal from "../modals/AddItemModal";
 import DeleteItemModal from "../modals/DeleteItemModal";
+import UpdateItemModal from "../modals/UpdateItemModal";
 interface DirectoryListProps {}
 const DirectoryList = () => {
   // redux state
@@ -20,17 +21,28 @@ const DirectoryList = () => {
   const { Portal: DeleteDirectoryPortal, setIsMount: setIsMountDeleteDirectory } = usePortal();
 
   const handleClickDeleteButton = () => {
-    // 예외처리
+    // 최상위 폴더 삭제시도 시 예외처리
     if (currentDir.parent === undefined) return alert("최상위 폴더는 삭제할 수 없습니다.");
     if (currentDir.children.length > 0)
       return alert("하위에 폴더나 파일이 있으면 삭제할 수 없습니다!");
     setIsMountDeleteDirectory(true);
   };
+  const handleClickUpdateButton = () => {
+    // 최상위 폴더 수정시도 시 예외처리
+    if (currentDir.parent === undefined) return alert("최상위 폴더는 수정할 수 없습니다.");
+    setIsMountUpdateDirectory(true);
+  };
+  const hadleClickAddButton = () => {
+    // 폴더를 선택하지 않았을 때 예외처리
+    if (currentDir.name === "" && currentDir.parent === undefined)
+      return alert("폴더를 선택해주세요!");
+    setIsMountAddDirectory(true);
+  };
   return (
     <Col>
       <ButtonBox>
-        <Button onClick={() => setIsMountAddDirectory(true)}>추가</Button>
-        <Button onClick={() => setIsMountUpdateDirectory(true)}>수정</Button>
+        <Button onClick={hadleClickAddButton}>추가</Button>
+        <Button onClick={handleClickUpdateButton}>수정</Button>
         <Button isDelete onClick={handleClickDeleteButton}>
           삭제
         </Button>
@@ -44,6 +56,9 @@ const DirectoryList = () => {
       <DeleteDirectoryPortal>
         <DeleteItemModal type="DIRECTORY" setIsMount={setIsMountDeleteDirectory} />
       </DeleteDirectoryPortal>
+      <UpdateDirectoryPortal>
+        <UpdateItemModal type="DIRECTORY" setIsMount={setIsMountUpdateDirectory} />
+      </UpdateDirectoryPortal>
     </Col>
   );
 };

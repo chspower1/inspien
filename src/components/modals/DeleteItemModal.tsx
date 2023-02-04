@@ -8,7 +8,7 @@ import {
   selectCurrentServerId,
   setCurrentDir,
 } from "../../store/slice/currentInfoSlice";
-import { removeDirectory, removeItem } from "../../store/slice/dataSlice";
+import { removeDirectory, removeFile } from "../../store/slice/dataSlice";
 import { ItemType } from "../../types/mockupData";
 interface DeleteItemModalProps {
   setIsMount: React.Dispatch<React.SetStateAction<boolean>>;
@@ -47,7 +47,7 @@ const DeleteItemModal = ({ setIsMount, type }: DeleteItemModalProps) => {
       );
       // delete Item
       dispatch(
-        removeItem({
+        removeFile({
           serverId,
           currentDir,
           targetName: currentFile.name!,

@@ -34,7 +34,7 @@ const AddItemModal = ({ setIsMount, type }: AddItemModalProps) => {
 
   // 추가 버튼 클릭 시
   const onValid = (form: AddItemForm) => {
-    if (currentDir.children.find((item) => item.name === form.name))
+    if (currentDir.children.find((item) => item.type === type && item.name === form.name))
       return alert("동일한 경로에는 같은 이름을 가진 파일 및 폴더를 생성할 수 없습니다!");
     const newItem: Item =
       type === "FILE"
