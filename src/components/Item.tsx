@@ -19,30 +19,29 @@ const Item = ({ item, isActive = false }: ItemProps) => {
   );
 };
 export default Item;
-const ItemWrapper = styled(Row)`
+export const ItemWrapper = styled(Row)`
   width: 1000px;
   height: 80px;
   cursor: pointer;
   background-color: white;
   color: ${({ theme }) => theme.text};
+  transition: all 0.3s ease;
   &:hover {
-    background-color: #9eb2db;
+    background-color: ${({ theme }) => theme.gray};
   }
   &.active {
-    background-color: #7e94c0;
+    background-color: ${({ theme }) => theme.gray};
   }
 `;
-const Element = styled(Row)`
+export const Element = styled(Row)`
   height: 80px;
-
-  border: 1px solid white;
 `;
-const Name = styled(Element)`
+export const Name = styled(Element)`
   width: 350px;
 `;
-const FileSize = styled(Element)`
+export const FileSize = styled(Element)`
   width: 250px;
 `;
-const Time = styled(Element)`
+export const Time = styled(Element)`
   width: 400px;
 `;
