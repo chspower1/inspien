@@ -41,7 +41,9 @@ const dataSlice = createSlice({
 
       // target 디렉토리 추적
       const targetDirectory = searchInChildren(serverData, name, parent);
-      const targetIndex = targetDirectory?.children.findIndex((item) => item.name === targetName);
+      const targetIndex = targetDirectory?.children.findIndex(
+        (item) => item.type === "FILE" && item.name === targetName
+      );
 
       // Delete File
       if (targetIndex !== undefined && targetIndex > -1) {
